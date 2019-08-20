@@ -1,0 +1,76 @@
+package com.pramati.bot.dao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.pramati.bot.service.IPatientService;
+
+@Component
+public class PatientsDao implements IPatientService {
+	private final JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	public PatientsDao(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+//	Getting all patients
+	public String getPatients() {
+		String query = "select name,contact from patients";
+		SqlRowSet rowSet = jdbcTemplate.queryForRowSet(query);
+		String res = "";
+		while (rowSet.next()) {
+			res += rowSet.getString(1) + " " + rowSet.getString(2) + "\n";
+		}
+
+		return res;
+	}
+
+//	Getting all appointments details(patient_name,appointment_date,doc_name,time_of_appointment) for a patient name
+	public String getPatientAppointments(@RequestParam String name) {
+
+		String pid_query = "select pid from patients where name=?";
+		SqlRowSet rowset_name = jdbcTemplate.queryForRowSet(pid_query, name);
+		rowset_name.next();
+		int pid = rowset_name.getInt(1);
+
+		String query = "select p.name,d.doc_name,a.appointment_date,s.slot_time from patients p,doctors d,slots s,appointments a where a.pid=p.pid "
+				+ "and a.doc_id=d.doc_id and a.slot_id=s.slot_id and a.pid=?";
+		SqlRowSet rowSet = jdbcTemplate.queryForRowSet(query, pid);
+		String res = "";
+		while (rowSet.next()) {
+//			System.out.println(rowSet.getString(1)+" "+rowSet.getString(2)+" "+rowSet.getString(3));
+			res += rowSet.getString(1) + " " + rowSet.getString(2) + " " + rowSet.getString(3) + " "
+					+ rowSet.getString(4) + "\n";
+		}
+
+		return res;
+
+	}
+
+	public int newPatient(String name, int contact) {
+		String query = "insert into patients(name,contact) values(?,?)";
+		int updateCount = 0;
+		try {
+			updateCount = jdbcTemplate.update(query, name, contact);
+		} catch (Exception e) {
+//			System.out.println("In exception " + e.getStackTrace());
+		}
+		return updateCount;
+
+	}
+
+	public int deletePatient(String name) {
+		String query = "delete from patients where name=?";
+		int flag = 0;
+		try {
+			flag = jdbcTemplate.update(query, name);
+		} catch (Exception e) {
+
+		}
+		return flag;
+	}
+}
