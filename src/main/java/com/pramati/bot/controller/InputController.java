@@ -30,7 +30,7 @@ public class InputController {
 
 		boolean flag = false;
 		flag = eventService.createEvent(startDate, endDate);
-		List<String> availableSlots = eventService.suggestEvents();
+		List<String> availableSlots = eventService.suggestEvents(startDate);
 
 		if (flag)
 			return "Successfully created event";

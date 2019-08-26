@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +23,7 @@ public class EventInsertionService {
 //	private static CalendarAPI api;
 	private static Calendar service;
 
-	private static DateTime now = new DateTime(System.currentTimeMillis());
+//	private static DateTime now = new DateTime(System.currentTimeMillis());
 
 	static {
 		try {
@@ -36,7 +35,7 @@ public class EventInsertionService {
 		}
 	}
 
-	public boolean createEvent(String startDate, String endDate) throws IOException {
+	public boolean createEvent(String startDate, String endDate) throws IOException, ParseException {
 
 		Event event = new Event().setSummary("Appointment");
 
@@ -55,9 +54,9 @@ public class EventInsertionService {
 		return false;
 	}
 
-	public boolean checkEventExists(String startDate) throws IOException {
-
-		List<Event> items = getEvents();
+	public boolean checkEventExists(String startDate) throws IOException, ParseException {
+		SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+		List<Event> items = getEvents(new DateTime(df1.parse(startDate)));
 
 		if (items.isEmpty()) {
 			return true;
@@ -83,12 +82,14 @@ public class EventInsertionService {
 
 	}
 
-	public List<String> suggestEvents() throws IOException, ParseException {
+	public List<String> suggestEvents(String startDate) throws IOException, ParseException {
 
 		List<String> availableSlots = new ArrayList<String>();
-		List<Event> items = getEvents();
+
 		SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
 		SimpleDateFormat df2 = new SimpleDateFormat("hh:mm aa");
+
+		List<Event> items = getEvents(new DateTime(df1.parse(startDate)));
 
 		for (Event event : items) {
 			String date = event.getStart().getDateTime().toString();
@@ -96,15 +97,16 @@ public class EventInsertionService {
 				Date strDate = df1.parse(date);
 				date = df2.format(strDate);
 				availableSlots.add(date);
-//                System.out.println(date);
+//				System.out.println(date);
 			}
 		}
+
 		return availableSlots;
 	}
 
-	public List<Event> getEvents() throws IOException {
+	public List<Event> getEvents(DateTime date) throws IOException {
 
-		Events events = service.events().list("sandeep.alimi@imaginea.com").setMaxResults(10).setTimeMin(now)
+		Events events = service.events().list("sandeep.alimi@imaginea.com").setMaxResults(10).setTimeMin(date)
 				.setOrderBy("startTime").setSingleEvents(true).execute();
 		List<Event> items = events.getItems();
 		return items;

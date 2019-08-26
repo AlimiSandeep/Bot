@@ -39,7 +39,7 @@ public class AppointmentDao implements IAppointmentService {
 
 			return "Created successfully";
 		}
-		return "No slots available at that time and date\nAvailable slots are ::" + "\n"
+		return "No slots available at that time\nAvailable slots on "+appointment_date+" are ::" + "\n"
 				+ docService.getAvailableSlots(appointment_date, doc_id);
 
 	}

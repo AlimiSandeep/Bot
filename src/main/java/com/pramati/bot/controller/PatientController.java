@@ -1,6 +1,7 @@
 package com.pramati.bot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,21 +22,21 @@ public class PatientController {
 	
 	
 	
-	@RequestMapping(value = "/get-details-by-name", method = RequestMethod.GET)
-	public String getPatientAppointments(@RequestParam String name) {
+	@RequestMapping(value = "/patients/{name}", method = RequestMethod.GET)
+	public String getPatientAppointments(@PathVariable String name) {
 		return patientService.getPatientAppointments(name);
 	}
 	
-	@RequestMapping(value = "/new-patient", method = RequestMethod.POST)
+	@RequestMapping(value = "/patient/new", method = RequestMethod.POST)
 	public String newDoctor(@RequestParam String name, @RequestParam int contact) {
 		int updatedCount = patientService.newPatient(name, contact);
 		if (updatedCount == 1)
 			return "Succesfully inserted";
-		return "Record insertion failed";
+		return "Patient already exists with given name...";
 
 	}
 	
-	@RequestMapping(value = "/delete-patient", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/patient/remove", method = RequestMethod.DELETE)
 	public String deletePatient(@RequestParam String name) {
 		int flag = patientService.deletePatient(name);
 		if (flag == 1)

@@ -1,6 +1,7 @@
 package com.pramati.bot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,10 +20,9 @@ public class AppointmentController {
 			@RequestParam String appointment_date, @RequestParam int pid) {
 		return appointmentService.createAppointment(doc_id, slot_time, appointment_date, pid);
 	}
-	
-	
-	@RequestMapping(value = "/get-details-by-date", method = RequestMethod.GET)
-	public String getAppointments(@RequestParam String appointment_date) {
+
+	@RequestMapping(value = "/appointment/{date}", method = RequestMethod.GET)
+	public String getAppointments(@PathVariable("date") String appointment_date) {
 		return appointmentService.getAppointments(appointment_date);
 	}
 }
