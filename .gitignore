@@ -2,6 +2,6 @@
 *.settings
 *.project
 *.mvn/wrapper
-**/mvnw/
+*mvnw
 **target/
 **/tokens/
