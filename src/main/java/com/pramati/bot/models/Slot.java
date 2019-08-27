@@ -1,6 +1,6 @@
-package com.pramati.bot.bean;
+package com.pramati.bot.models;
 
-public class Slots {
+public class Slot {
 private int slot_id;
 	private String slot_time;
 

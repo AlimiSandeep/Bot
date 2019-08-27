@@ -1,4 +1,4 @@
-package com.pramati.bot.controller;
+package com.pramati.bot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,20 +7,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pramati.bot.service.IDoctorService;
+import com.pramati.bot.service.DoctorService;
 
 @RestController
 public class DoctorsController {
 
 	@Autowired
-	private IDoctorService docService;
+	private DoctorService docService;
 
-	@RequestMapping(value = "/doctor/new", method = RequestMethod.POST)
+	@RequestMapping(value = "/doctor", method = RequestMethod.PUT)
 	public String newDoctor(@RequestParam String name, @RequestParam String specialization) {
 		int updatedCount = docService.newDoctor(name, specialization);
 		if (updatedCount == 1)
 			return "Succesfully inserted";
-		return "Record failed";
+		return "Doctor already exist with given name....!!";
 
 	}
 
@@ -35,7 +35,7 @@ public class DoctorsController {
 
 	}
 
-	@RequestMapping(value = "/doctor/remove", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/doctor", method = RequestMethod.DELETE)
 	public String deleteDoctor(@RequestParam String name) {
 		int flag = docService.deleteDoctor(name);
 		if (flag == 1)

@@ -1,4 +1,4 @@
-package com.pramati.bot.controller;
+package com.pramati.bot.controllers;
 
 import java.io.IOException;
 import java.text.ParseException;

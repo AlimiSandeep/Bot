@@ -1,4 +1,4 @@
-package com.pramati.bot.controller;
+package com.pramati.bot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pramati.bot.service.IPatientService;
+import com.pramati.bot.service.PatientService;
 
 @RestController
 public class PatientController {
 
 	@Autowired
-	private IPatientService patientService;
+	private PatientService patientService;
 
 	@RequestMapping(value = "/patients", method = RequestMethod.GET)
 	public String getPatients() {
@@ -27,16 +27,16 @@ public class PatientController {
 		return patientService.getPatientAppointments(name);
 	}
 	
-	@RequestMapping(value = "/patient/new", method = RequestMethod.POST)
-	public String newDoctor(@RequestParam String name, @RequestParam int contact) {
-		int updatedCount = patientService.newPatient(name, contact);
+	@RequestMapping(value = "/patient", method = RequestMethod.PUT)
+	public String newDoctor(@RequestParam String name, @RequestParam int contact,@RequestParam String city) {
+		int updatedCount = patientService.newPatient(name, contact,city);
 		if (updatedCount == 1)
 			return "Succesfully inserted";
 		return "Patient already exists with given name...";
 
 	}
 	
-	@RequestMapping(value = "/patient/remove", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/patient", method = RequestMethod.DELETE)
 	public String deletePatient(@RequestParam String name) {
 		int flag = patientService.deletePatient(name);
 		if (flag == 1)

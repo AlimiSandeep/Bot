@@ -3,13 +3,11 @@ package com.pramati.bot.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.pramati.bot.service.IPatientService;
-
-@Component
-public class PatientsDao implements IPatientService {
+@Repository
+public class PatientsDao {
 	private final JdbcTemplate jdbcTemplate;
 
 	@Autowired
@@ -19,11 +17,11 @@ public class PatientsDao implements IPatientService {
 
 //	Getting all patients
 	public String getPatients() {
-		String query = "select name,contact from patients";
+		String query = "select name,contact,city from patients";
 		SqlRowSet rowSet = jdbcTemplate.queryForRowSet(query);
 		String res = "";
 		while (rowSet.next()) {
-			res += rowSet.getString(1) + " " + rowSet.getString(2) + "\n";
+			res += rowSet.getString(1) + " " + rowSet.getString(2) + " " + rowSet.getString(3) + "\n";
 		}
 
 		return res;
@@ -51,11 +49,11 @@ public class PatientsDao implements IPatientService {
 
 	}
 
-	public int newPatient(String name, int contact) {
-		String query = "insert into patients(name,contact) values(?,?)";
+	public int newPatient(String name, int contact, String city) {
+		String query = "insert into patients(name,contact,city) values(?,?,?)";
 		int updateCount = 0;
 		try {
-			updateCount = jdbcTemplate.update(query, name, contact);
+			updateCount = jdbcTemplate.update(query, name, contact, city);
 		} catch (Exception e) {
 //			System.out.println("In exception " + e.getStackTrace());
 		}

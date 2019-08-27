@@ -3,12 +3,10 @@ package com.pramati.bot.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import com.pramati.bot.service.IDoctorService;
-
-@Component
-public class DoctorsDao implements IDoctorService {
+@Repository
+public class DoctorsDao {
 
 	private final JdbcTemplate jdbcTemplate;
 
@@ -53,14 +51,26 @@ public class DoctorsDao implements IDoctorService {
 
 	}
 
+	public String getAvailableSlotsForPatient(String date, int pid) {
+		String query = "select distinct s.slot_time from slots s INNER JOIN appointments b on b.slot_id!=s.slot_id and s.slot_id not in(select slot_id from appointments where appointment_date='"
+				+ date + "' and pid='" + pid + "')";
+		SqlRowSet rowSet = jdbcTemplate.queryForRowSet(query);
+		String res = "";
+		while (rowSet.next()) {
+			res += rowSet.getString(1) + "\n";
+		}
+
+		return res;
+
+	}
+
 	public int deleteDoctor(String name) {
 		String query = "delete from doctors where doc_name=?";
-		int flag=0;
+		int flag = 0;
 		try {
-			flag=jdbcTemplate.update(query, name);
-		}
-		catch(Exception e) {
-			
+			flag = jdbcTemplate.update(query, name);
+		} catch (Exception e) {
+
 		}
 		return flag;
 	}

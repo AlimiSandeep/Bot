@@ -1,6 +1,6 @@
-package com.pramati.bot.bean;
+package com.pramati.bot.models;
 
-public class Patients {
+public class Patient {
 	private int pid;
 	private String name;
 	private int contact;

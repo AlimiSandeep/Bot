@@ -1,6 +1,6 @@
-package com.pramati.bot.bean;
+package com.pramati.bot.models;
 
-public class Doctors {
+public class Doctor {
 	private int doc_id;
 	private String doc_name;
 	private String specialization;

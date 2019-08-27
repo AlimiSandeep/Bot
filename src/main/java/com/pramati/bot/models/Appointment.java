@@ -1,19 +1,19 @@
-package com.pramati.bot.bean;
+package com.pramati.bot.models;
 
-public class Appointments {
+public class Appointment {
 
 	private int book_id;
-	private Doctors doctors;
-	private Slots slots;
+	private Doctor doctors;
+	private Slot slots;
 	private String status;
 	private String date;
-	private Patients patients;
+	private Patient patients;
 
-	public Patients getPatients() {
+	public Patient getPatients() {
 		return patients;
 	}
 
-	public void setPatients(Patients patients) {
+	public void setPatients(Patient patients) {
 		this.patients = patients;
 	}
 
@@ -25,20 +25,20 @@ public class Appointments {
 		this.book_id = book_id;
 	}
 
-	public Doctors getDoctors() {
+	public Doctor getDoctors() {
 		return doctors;
 	}
 
-	public void setDoctors(Doctors doctors) {
+	public void setDoctors(Doctor doctors) {
 		this.doctors = doctors;
 	}
 
 	
-	public Slots getSlots() {
+	public Slot getSlots() {
 		return slots;
 	}
 
-	public void setSlots(Slots slots) {
+	public void setSlots(Slot slots) {
 		this.slots = slots;
 	}
 
