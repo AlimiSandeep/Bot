@@ -1,4 +1,4 @@
-package com.pramati.bot.models;
+package com.pramati.bot.entities;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "doctors")
+@Table(name = "doctor")
 public class Doctor {
 	@Id
-	private int doc_id;
-	private String doc_name;
+	private int docId;
+	private String docName;
 	private String specialization;
 	
 	@ManyToMany
@@ -28,20 +28,20 @@ public class Doctor {
 		this.appointments = appointments;
 	}
 
-	public int getDoc_id() {
-		return doc_id;
+	public int getDocId() {
+		return docId;
 	}
 
-	public void setDoc_id(int doc_id) {
-		this.doc_id = doc_id;
+	public void setDocId(int docId) {
+		this.docId = docId;
 	}
 
-	public String getDoc_name() {
-		return doc_name;
+	public String getDocName() {
+		return docName;
 	}
 
-	public void setDoc_name(String doc_name) {
-		this.doc_name = doc_name;
+	public void setDocName(String docName) {
+		this.docName = docName;
 	}
 
 	public String getSpecialization() {

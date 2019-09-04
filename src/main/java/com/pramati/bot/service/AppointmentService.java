@@ -12,12 +12,25 @@ public class AppointmentService {
 
 	@Autowired
 	AppointmentDao dao;
+	
+	@Autowired
+	private PatientService patientService;
+	
 
-	public int createAppointment(int doc_id, String slot_time, String appointment_date, int pid) {
-		return dao.createAppointment(doc_id, slot_time, appointment_date, pid);
+	public String createAppointment(int docId, String slotTime, String appointmentDate, int pId) {
+		int updatedCount = dao.createAppointment(docId, slotTime, appointmentDate, pId);
+		if (updatedCount == 1)
+			return "Appointment created successfully";
+		
+		return "No slots are available at this time\nAvailable slots are on " + appointmentDate + " are ::\n"
+		+ patientService.getAvailableSlotsForPatient(appointmentDate, pId);
 	}
 
-	public List<Object[]> getAppointments(String appointment_date) {
-		return dao.getAppointments(appointment_date);
+	public List<Object[]> getAppointments(String appointmentDate) {
+		return dao.getAppointments(appointmentDate);
+	}
+
+	public Object[] getAppointment(int appointmentId) {
+		return dao.getAppointment(appointmentId);
 	}
 }

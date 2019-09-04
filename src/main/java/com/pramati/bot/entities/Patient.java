@@ -1,4 +1,4 @@
-package com.pramati.bot.models;
+package com.pramati.bot.entities;
 
 import java.util.List;
 
@@ -10,12 +10,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "patient")
 public class Patient {
 
 	@Id
 	@Column(name = "pid")
-	private int pid;
+	private int pId;
 	private String name;
 	private int contact;
 	private String city;
@@ -41,11 +41,11 @@ public class Patient {
 	}
 
 	public int getPid() {
-		return pid;
+		return pId;
 	}
 
-	public void setPid(int pid) {
-		this.pid = pid;
+	public void setPid(int pId) {
+		this.pId = pId;
 	}
 
 	public String getName() {
@@ -63,5 +63,5 @@ public class Patient {
 	public void setContact(int contact) {
 		this.contact = contact;
 	}
-	
+
 }

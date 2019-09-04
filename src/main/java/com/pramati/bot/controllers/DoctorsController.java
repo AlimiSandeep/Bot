@@ -19,15 +19,7 @@ public class DoctorsController {
 
 	@RequestMapping(value = "/doctor", method = RequestMethod.PUT)
 	public String newDoctor(@RequestParam String name, @RequestParam String specialization) {
-		String output = null;
-		try {
-			int updatedCount = docService.newDoctor(name, specialization);
-			if (updatedCount == 1)
-				return "Succesfully inserted";
-		} catch (Exception e) {
-			return "Doctor already exist with given name....!!";
-		}
-		return output;
+		return docService.newDoctor(name, specialization);
 
 	}
 
@@ -36,18 +28,15 @@ public class DoctorsController {
 		return docService.getDoctors();
 	}
 
-	@RequestMapping(value = "/doctor/{doc_id}", method = RequestMethod.GET)
-	public List<String> getAvailableSlots(@RequestParam String date, @PathVariable int doc_id) {
-		return docService.getAvailableSlots(date, doc_id);
+	@RequestMapping(value = "/doctor/{docName}/date/{date}", method = RequestMethod.GET)
+	public List<String> getAvailableSlots(@PathVariable String date, @PathVariable String docName) {
+		return docService.getAvailableSlots(date, docName);
 
 	}
 
 	@RequestMapping(value = "/doctor", method = RequestMethod.DELETE)
 	public String deleteDoctor(@RequestParam String name) {
-		int flag = docService.deleteDoctor(name);
-		if (flag == 1)
-			return "Succesfully deleted";
-		return "Deletion failed.....As no doctor exists with the name provided";
+		return docService.deleteDoctor(name);
 
 	}
 }

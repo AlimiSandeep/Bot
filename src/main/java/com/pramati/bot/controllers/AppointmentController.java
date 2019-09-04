@@ -19,28 +19,21 @@ public class AppointmentController {
 	@Autowired
 	private AppointmentService appointmentService;
 
-	@Autowired
-	private DoctorService doctorService;
-
 	@RequestMapping(value = "/appointment", method = RequestMethod.POST)
-	public String createAppointment(@RequestParam int doc_id, @RequestParam String slot_time,
-			@RequestParam String appointment_date, @RequestParam int pid) {
+	public String createAppointment(@RequestParam int docId, @RequestParam String slotTime,
+			@RequestParam String appointmentDate, @RequestParam int pId) {
 
-		try {
-			int updatedCount = appointmentService.createAppointment(doc_id, slot_time, appointment_date, pid);
-			if (updatedCount == 1)
-				return "Appointment created successfully";
-		} catch (Exception e) {
-
-		}
-		return "No slots are available at this time\nAvailable slots are on " + appointment_date + " are ::\n"
-				+ doctorService.getAvailableSlotsForPatient(appointment_date, pid);
-		
+		return appointmentService.createAppointment(docId, slotTime, appointmentDate, pId);
 
 	}
 
-	@RequestMapping(value = "/appointment/{date}", method = RequestMethod.GET)
-	public List<Object[]> getAppointments(@PathVariable("date") String appointment_date) {
-		return appointmentService.getAppointments(appointment_date);
+	@RequestMapping(value = "/appointment", method = RequestMethod.GET)
+	public List<Object[]> getAppointments(@RequestParam("date") String appointmentDate) {
+		return appointmentService.getAppointments(appointmentDate);
+	}
+
+	@RequestMapping(value = "/appointment/{id}", method = RequestMethod.GET)
+	public Object[] getAppointmentsById(@PathVariable("id") int appointmentId) {
+		return appointmentService.getAppointment(appointmentId);
 	}
 }

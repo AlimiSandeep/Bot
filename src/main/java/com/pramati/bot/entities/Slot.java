@@ -1,4 +1,4 @@
-package com.pramati.bot.models;
+package com.pramati.bot.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,12 +7,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "slots")
+@Table(name = "slot")
 public class Slot {
 
 	@Id
-	private int slot_id;
-	private String slot_time;
+	private int slotId;
+	private String slotTime;
 
 	@OneToOne
 	@JoinColumn(name="appointments_slot_fk")
@@ -26,25 +26,25 @@ public class Slot {
 		this.appointment = appointment;
 	}
 
-	public int getSlot_id() {
-		return slot_id;
+	public int getslotId() {
+		return slotId;
 	}
 
-	public void setSlot_id(int slot_id) {
-		this.slot_id = slot_id;
+	public void setslotId(int slotId) {
+		this.slotId = slotId;
 	}
 
-	public String getSlot_time() {
-		return slot_time;
+	public String getslotTime() {
+		return slotTime;
 	}
 
-	public void setSlot_time(String slot_time) {
-		this.slot_time = slot_time;
+	public void setslotTime(String slotTime) {
+		this.slotTime = slotTime;
 	}
 
 	@Override
 	public String toString() {
-		return slot_id + " " + slot_time;
+		return slotId + " " + slotTime;
 	}
 
 }
