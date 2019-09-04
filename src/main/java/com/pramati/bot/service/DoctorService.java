@@ -1,9 +1,12 @@
 package com.pramati.bot.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pramati.bot.dao.DoctorsDao;
+import com.pramati.bot.models.Slot;
 
 @Service
 public class DoctorService {
@@ -15,15 +18,15 @@ public class DoctorService {
 		return dao.newDoctor(name, specialization);
 	}
 
-	public String getDoctors() {
+	public List<Object[]> getDoctors() {
 		return dao.getDoctors();
 	}
 
-	public String getAvailableSlots(String date, int doc_id) {
+	public List<String> getAvailableSlots(String date, int doc_id) {
 		return dao.getAvailableSlots(date, doc_id);
 	}
 
-	public String getAvailableSlotsForPatient(String date, int pid) {
+	public List<String> getAvailableSlotsForPatient(String date, int pid) {
 		return dao.getAvailableSlotsForPatient(date, pid);
 	}
 

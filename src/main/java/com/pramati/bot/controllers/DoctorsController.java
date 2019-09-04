@@ -1,5 +1,7 @@
 package com.pramati.bot.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,20 +19,25 @@ public class DoctorsController {
 
 	@RequestMapping(value = "/doctor", method = RequestMethod.PUT)
 	public String newDoctor(@RequestParam String name, @RequestParam String specialization) {
-		int updatedCount = docService.newDoctor(name, specialization);
-		if (updatedCount == 1)
-			return "Succesfully inserted";
-		return "Doctor already exist with given name....!!";
+		String output = null;
+		try {
+			int updatedCount = docService.newDoctor(name, specialization);
+			if (updatedCount == 1)
+				return "Succesfully inserted";
+		} catch (Exception e) {
+			return "Doctor already exist with given name....!!";
+		}
+		return output;
 
 	}
 
 	@RequestMapping(value = "/doctors", method = RequestMethod.GET)
-	public String getDoctors() {
+	public List<Object[]> getDoctors() {
 		return docService.getDoctors();
 	}
 
 	@RequestMapping(value = "/doctor/{doc_id}", method = RequestMethod.GET)
-	public String getAvailableSlots(@RequestParam String date, @PathVariable int doc_id) {
+	public List<String> getAvailableSlots(@RequestParam String date, @PathVariable int doc_id) {
 		return docService.getAvailableSlots(date, doc_id);
 
 	}

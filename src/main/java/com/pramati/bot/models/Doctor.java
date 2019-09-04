@@ -1,9 +1,32 @@
 package com.pramati.bot.models;
 
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "doctors")
 public class Doctor {
+	@Id
 	private int doc_id;
 	private String doc_name;
 	private String specialization;
+	
+	@ManyToMany
+	@JoinColumn(name="appointments_doc_fk")
+	private List<Appointment> appointments;
+
+	public List<Appointment> getAppointment() {
+		return appointments;
+	}
+
+	public void setAppointment(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
 
 	public int getDoc_id() {
 		return doc_id;

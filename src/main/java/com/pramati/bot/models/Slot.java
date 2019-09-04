@@ -1,8 +1,30 @@
 package com.pramati.bot.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "slots")
 public class Slot {
-private int slot_id;
+
+	@Id
+	private int slot_id;
 	private String slot_time;
+
+	@OneToOne
+	@JoinColumn(name="appointments_slot_fk")
+	private Appointment appointment;
+
+	public Appointment getAppointment() {
+		return appointment;
+	}
+
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
+	}
 
 	public int getSlot_id() {
 		return slot_id;
@@ -22,7 +44,7 @@ private int slot_id;
 
 	@Override
 	public String toString() {
-		return  slot_id + " " + slot_time;
+		return slot_id + " " + slot_time;
 	}
 
 }
