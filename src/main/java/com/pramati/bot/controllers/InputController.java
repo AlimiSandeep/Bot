@@ -17,10 +17,10 @@ import com.pramati.bot.service.EventInsertionService;
 public class InputController {
 
 	@Autowired
-	EventInsertionService eventService;
+	private EventInsertionService eventService;
 
 	@Autowired
-	DateService ds;
+	private DateService ds;
 
 	@RequestMapping(value = "/event-creation", method = RequestMethod.POST)
 	public String getDate(@RequestParam("userInput") String message) throws ParseException, IOException {

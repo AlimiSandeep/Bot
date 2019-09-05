@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pramati.bot.dao.PatientDao;
-import com.pramati.bot.entities.Patient;
+
 
 @Service
 public class PatientService {
 
 	@Autowired
-	PatientDao dao;
+	private PatientDao dao;
 
 	public List<Object[]> getPatients() {
 		return dao.getPatients();

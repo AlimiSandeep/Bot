@@ -11,7 +11,7 @@ import com.pramati.bot.dao.AppointmentDao;
 public class AppointmentService {
 
 	@Autowired
-	AppointmentDao dao;
+	private AppointmentDao dao;
 	
 	@Autowired
 	private PatientService patientService;

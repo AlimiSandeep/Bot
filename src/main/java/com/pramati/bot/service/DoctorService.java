@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.pramati.bot.dao.DoctorDao;
 
-
 @Service
 public class DoctorService {
 

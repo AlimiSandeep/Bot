@@ -14,7 +14,6 @@ public class Appointment {
 	@Id
 	private int appointmentId;
 
-//	@ManyToMany
 	@ManyToOne
 	private Doctor doctor;
 
