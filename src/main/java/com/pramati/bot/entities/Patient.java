@@ -3,12 +3,34 @@ package com.pramati.bot.entities;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
+import com.pramati.bot.dto.PatientInfoDTO;
+
+@NamedNativeQuery(
+	    name = "PatientInfoDTO",
+	    query ="select name, contact, city from patient where name=:name",
+	    resultSetMapping = "PatientInfoDTO"
+	)
+	@SqlResultSetMapping(
+	    name = "PatientInfoDTO",
+	    classes = @ConstructorResult(
+	        targetClass = PatientInfoDTO.class,
+	        columns = {
+	            @ColumnResult(name = "name"),
+	            @ColumnResult(name = "contact"),
+	            @ColumnResult(name = "city")
+	        }
+	    )
+	)
 @Entity
 @Table(name = "patient")
 public class Patient {

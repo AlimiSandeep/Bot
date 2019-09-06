@@ -15,7 +15,7 @@ public class Slot {
 	private String slotTime;
 
 	@OneToOne
-	@JoinColumn(name="appointments_slot_fk")
+	@JoinColumn(name = "appointments_slot_fk")
 	private Appointment appointment;
 
 	public Appointment getAppointment() {

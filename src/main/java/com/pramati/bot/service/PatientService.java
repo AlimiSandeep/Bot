@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pramati.bot.dao.PatientDao;
-
+import com.pramati.bot.dto.PatientInfoDTO;
 
 @Service
 public class PatientService {
@@ -14,12 +14,8 @@ public class PatientService {
 	@Autowired
 	private PatientDao dao;
 
-	public List<Object[]> getPatients() {
+	public List<PatientInfoDTO> getPatients() {
 		return dao.getPatients();
-	}
-
-	public List<Object[]> getPatientAppointments(String name) {
-		return dao.getPatientAppointments(name);
 	}
 
 	public String newPatient(String name, int contact, String city) {
@@ -35,13 +31,21 @@ public class PatientService {
 	}
 
 	public String deletePatient(String name) {
-		int flag =dao.deletePatient(name);
+		int flag = dao.deletePatient(name);
 		if (flag == 1)
 			return "Succesfully deleted";
 		return "Deletion failed.....As no patient exists with the name provided";
 	}
 
-	public List<String> getAvailableSlotsForPatient(String date, int pId) {
-		return dao.getAvailableSlotsForPatient(date, pId);
+	public String getPatientInfo(String name) {
+		PatientInfoDTO patientDTO = dao.getPatientInfo(name);
+		if (patientDTO == null)
+			return "No patient exists with given name";
+		return patientDTO.toString();
+	}
+
+	public int getPatientId(String name) {
+		return dao.getPatientId(name);
+
 	}
 }

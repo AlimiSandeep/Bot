@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pramati.bot.dto.PatientInfoDTO;
 import com.pramati.bot.service.PatientService;
 
 @RestController
@@ -18,13 +19,8 @@ public class PatientController {
 	private PatientService patientService;
 
 	@RequestMapping(value = "/patients", method = RequestMethod.GET)
-	public List<Object[]> getPatients() {
+	public List<PatientInfoDTO> getPatients() {
 		return patientService.getPatients();
-	}
-
-	@RequestMapping(value = "/patient/{name}", method = RequestMethod.GET)
-	public List<Object[]> getPatientAppointments(@PathVariable String name) {
-		return patientService.getPatientAppointments(name);
 	}
 
 	@RequestMapping(value = "/patient", method = RequestMethod.PUT)
@@ -38,6 +34,11 @@ public class PatientController {
 
 		return patientService.deletePatient(name);
 
+	}
+
+	@RequestMapping(value = "/patient/{name}", method = RequestMethod.GET)
+	public String getPatientInfo(@PathVariable String name) {
+		return patientService.getPatientInfo(name);
 	}
 
 }

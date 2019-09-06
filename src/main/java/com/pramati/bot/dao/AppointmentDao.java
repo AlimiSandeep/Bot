@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pramati.bot.service.DoctorService;
+import com.pramati.bot.dto.AppointmentInfoDTO;
+import com.pramati.bot.service.PatientService;
 import com.pramati.bot.service.SlotService;
 
 @Repository
@@ -20,10 +21,10 @@ public class AppointmentDao {
 	private EntityManager entityManager;
 
 	@Autowired
-	private DoctorService docService;
+	private SlotService slotService;
 
 	@Autowired
-	private SlotService slotService;
+	private PatientService patientService;
 
 	@Transactional
 	public int createAppointment(int docId, String slotTime, String appointmentDate, int pId) {
@@ -51,17 +52,39 @@ public class AppointmentDao {
 
 //	list of appointments on a date
 //	i.e Getting all appointments details(patient_name,appointment_date,doc_name,time_of_appointment) for a date
-	public List<Object[]> getAppointments(String appointmentDate) {
-		String query = "select p.name,d.doc_name,s.slot_time from patient p,doctor d,slot s ,appointment a where a.pid=p.pid "
-				+ "and a.doc_id=d.doc_id and a.slot_id=s.slot_id and a.appointment_date=:date";
-		return entityManager.createNativeQuery(query).setParameter("date", appointmentDate).getResultList();
+	public List<AppointmentInfoDTO> getAppointments(String appointmentDate) {
+
+		return entityManager.createNamedQuery("getAppointmentsByDate").setParameter("date", appointmentDate)
+				.getResultList();
 	}
 
-	public Object[] getAppointment(int appointmentId) {
-		String query = "select p.name,d.doc_name,s.slot_time from patient p,doctor d,slot s,appointment a "
-				+ "where a.pid=p.pid and a.doc_id=d.doc_id and a.slot_id=s.slot_id and a.appointment_id=:appointmentId";
-		return (Object[]) entityManager.createNativeQuery(query).setParameter("appointmentId", appointmentId)
-				.getSingleResult();
+	public AppointmentInfoDTO getAppointment(int appointmentId) {
+		try {
+			return (AppointmentInfoDTO) entityManager.createNamedQuery("getAppointmentByID")
+					.setParameter("appointmentId", appointmentId).getSingleResult();
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
 	}
 
+	public List<AppointmentInfoDTO> getPatientAppointments(String name) {
+
+		int pid = patientService.getPatientId(name);
+
+		return entityManager.createNamedQuery("listAppointmentsByName").setParameter("pid", pid).getResultList();
+
+	}
+
+	public int checkAppointmentsExistsOnDate(String appointmentDate) {
+		String query = "select count(appointment_id) from appointment where appointment_date=:appointmentDate";
+		BigInteger count = (BigInteger) entityManager.createNativeQuery(query)
+				.setParameter("appointmentDate", appointmentDate).getSingleResult();
+		return count.intValue();
+	}
+
+	@Transactional
+	public int deleteAppointment(int appointmentId) {
+		String query = "delete from appointment where appointment_id=:id";
+		return entityManager.createNativeQuery(query).setParameter("id", appointmentId).executeUpdate();
+	}
 }

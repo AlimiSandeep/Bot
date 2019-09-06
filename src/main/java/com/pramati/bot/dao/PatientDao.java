@@ -8,15 +8,17 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pramati.bot.dto.PatientInfoDTO;
+
 @Repository
 public class PatientDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public List<Object[]> getPatients() {
+	public List<PatientInfoDTO> getPatients() {
 		String query = "select name,contact,city from Patient";
-		return (List<Object[]>) entityManager.createQuery(query).getResultList();
+		return (List<PatientInfoDTO>) entityManager.createQuery(query).getResultList();
 	}
 
 	@Transactional
@@ -27,28 +29,20 @@ public class PatientDao {
 
 	}
 
-	public List<Object[]> getPatientAppointments(String name) {
-		String pid_query = "select pId from Patient where name=:name";
-		int pid = (int) entityManager.createQuery(pid_query).setParameter("name", name).getSingleResult();
-		String query = "select p.name,d.doc_name,a.appointment_date,s.slot_time from appointment a,patient p,doctor d,slot s where a.pid=p.pid "
-				+ "and a.doc_id=d.doc_id and a.slot_id=s.slot_id and a.pid=:pid";
-
-		return entityManager.createNativeQuery(query).setParameter("pid", pid).getResultList();
-
-	}
-
-	public List<String> getAvailableSlotsForPatient(String date, int pId) {
-		String query = "select distinct s.slot_time from slot s INNER JOIN appointment b on b.slot_id!=s.slot_id and s.slot_id not in"
-				+ "(select slot_id from appointment where appointment_date=:date and pid=:pId)";
-		return entityManager.createNativeQuery(query).setParameter("date", date).setParameter("pId", pId)
-				.getResultList();
-
-	}
-
 	@Transactional
 	public int deletePatient(String name) {
 		String query = "delete from Patient where name=:name";
 		return entityManager.createQuery(query).setParameter("name", name).executeUpdate();
 	}
 
+	public PatientInfoDTO getPatientInfo(String name) {
+		return (PatientInfoDTO) entityManager.createNamedQuery("PatientInfoDTO").setParameter("name", name)
+				.getSingleResult();
+	}
+
+	public int getPatientId(String name) {
+		String pid_query = "select pId from Patient where name=:name";
+		int pid = (int) entityManager.createQuery(pid_query).setParameter("name", name).getSingleResult();
+		return pid;
+	}
 }

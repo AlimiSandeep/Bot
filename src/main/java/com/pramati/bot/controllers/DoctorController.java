@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pramati.bot.dto.DoctorInfoDTO;
 import com.pramati.bot.service.DoctorService;
 
 @RestController
-public class DoctorsController {
+public class DoctorController {
 
 	@Autowired
 	private DoctorService docService;
@@ -24,12 +25,17 @@ public class DoctorsController {
 	}
 
 	@RequestMapping(value = "/doctors", method = RequestMethod.GET)
-	public List<Object[]> getDoctors() {
+	public List<DoctorInfoDTO> getDoctors() {
 		return docService.getDoctors();
 	}
 
+	@RequestMapping(value = "/doctor/{name}", method = RequestMethod.GET)
+	public String getDoctor(@PathVariable String name) {
+		return docService.getDoctor(name);
+	}
+
 	@RequestMapping(value = "/doctor/{docName}/date/{date}", method = RequestMethod.GET)
-	public List<String> getAvailableSlots(@PathVariable String date, @PathVariable String docName) {
+	public String getAvailableSlots(@PathVariable String date, @PathVariable String docName) {
 		return docService.getAvailableSlots(date, docName);
 
 	}

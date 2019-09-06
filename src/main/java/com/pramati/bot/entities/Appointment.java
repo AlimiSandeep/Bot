@@ -1,12 +1,74 @@
 package com.pramati.bot.entities;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
+import com.pramati.bot.dto.AppointmentInfoDTO;
+
+
+@NamedNativeQuery(
+	    name = "getAppointmentsByDate",
+	    query ="select p.name,d.doc_name,a.appointment_date,s.slot_time from patient p,doctor d,slot s ,appointment a where a.pid=p.pid "
+				+ "and a.doc_id=d.doc_id and a.slot_id=s.slot_id and a.appointment_date=:date",
+	    resultSetMapping = "AppointmentInfoDTO"
+	)
+	@SqlResultSetMapping(
+	    name = "allAppointments",
+	    classes = @ConstructorResult(
+	        targetClass = AppointmentInfoDTO.class,
+	        columns = {
+	            @ColumnResult(name = "name"),
+	            @ColumnResult(name = "doc_name"),
+	            @ColumnResult(name = "appointment_date"),
+	            @ColumnResult(name = "slot_time")
+	        }
+	    )
+	)
+
+@NamedNativeQuery(
+	    name = "getAppointmentByID",
+	    query ="select p.name,d.doc_name,a.appointment_date,s.slot_time from patient p,doctor d,slot s,appointment a "
+				+ "where a.pid=p.pid and a.doc_id=d.doc_id and a.slot_id=s.slot_id and a.appointment_id=:appointmentId",
+	    resultSetMapping = "AppointmentInfoDTO"
+	)
+	@SqlResultSetMapping(
+	    name = "singleAppointment",
+	    classes = @ConstructorResult(
+	        targetClass = AppointmentInfoDTO.class,
+	        columns = {
+	            @ColumnResult(name = "name"),
+	            @ColumnResult(name = "doc_name"),
+	            @ColumnResult(name = "appointment_date"),
+	            @ColumnResult(name = "slot_time")
+	        }
+	    )
+	)
+@NamedNativeQuery(
+	    name = "listAppointmentsByName",
+	    query ="select p.name,d.doc_name,a.appointment_date,s.slot_time from appointment a,patient p,doctor d,slot s where a.pid=p.pid "
+				+ "and a.doc_id=d.doc_id and a.slot_id=s.slot_id and a.pid=:pid",
+	    resultSetMapping = "AppointmentInfoDTO"
+	)
+	@SqlResultSetMapping(
+	    name = "AppointmentInfoDTO",
+	    classes = @ConstructorResult(
+	        targetClass = AppointmentInfoDTO.class,
+	        columns = {
+	            @ColumnResult(name = "name"),
+	            @ColumnResult(name = "doc_name"),
+	            @ColumnResult(name = "appointment_date"),
+	            @ColumnResult(name = "slot_time")
+	        }
+	    )
+	)
 @Entity
 @Table(name = "appointment")
 public class Appointment {
