@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pramati.bot.dto.DoctorInfoDTO;
 import com.pramati.bot.service.DoctorService;
 
 @RestController
-public class DoctorsController {
+public class DoctorController {
 
 	@Autowired
 	private DoctorService docService;
@@ -25,6 +26,7 @@ public class DoctorsController {
 	}
 
 	@RequestMapping(value = "/doctors", method = RequestMethod.GET)
+<<<<<<< HEAD:src/main/java/com/pramati/bot/controllers/DoctorsController.java
 	public String getDoctors() {
 		return docService.getDoctors();
 	}
@@ -32,6 +34,20 @@ public class DoctorsController {
 	@RequestMapping(value = "/doctor/{doc_id}", method = RequestMethod.GET)
 	public String getAvailableSlots(@RequestParam String date, @PathVariable int doc_id) {
 		return docService.getAvailableSlots(date, doc_id);
+=======
+	public List<DoctorInfoDTO> getDoctors() {
+		return docService.getDoctors();
+	}
+
+	@RequestMapping(value = "/doctor/{name}", method = RequestMethod.GET)
+	public String getDoctor(@PathVariable String name) {
+		return docService.getDoctor(name);
+	}
+
+	@RequestMapping(value = "/doctor/{docName}/date/{date}", method = RequestMethod.GET)
+	public String getAvailableSlots(@PathVariable String date, @PathVariable String docName) {
+		return docService.getAvailableSlots(date, docName);
+>>>>>>> 3390e22... used DTO's for projections:src/main/java/com/pramati/bot/controllers/DoctorController.java
 
 	}
 

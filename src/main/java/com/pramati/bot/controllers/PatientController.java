@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pramati.bot.dto.PatientInfoDTO;
 import com.pramati.bot.service.PatientService;
 
 @RestController
@@ -16,6 +17,7 @@ public class PatientController {
 	private PatientService patientService;
 
 	@RequestMapping(value = "/patients", method = RequestMethod.GET)
+<<<<<<< HEAD
 	public String getPatients() {
 		return patientService.getPatients();
 	}
@@ -27,6 +29,12 @@ public class PatientController {
 		return patientService.getPatientAppointments(name);
 	}
 	
+=======
+	public List<PatientInfoDTO> getPatients() {
+		return patientService.getPatients();
+	}
+
+>>>>>>> 3390e22... used DTO's for projections
 	@RequestMapping(value = "/patient", method = RequestMethod.PUT)
 	public String newDoctor(@RequestParam String name, @RequestParam int contact,@RequestParam String city) {
 		int updatedCount = patientService.newPatient(name, contact,city);
@@ -46,5 +54,10 @@ public class PatientController {
 	}
 	
 	
+
+	@RequestMapping(value = "/patient/{name}", method = RequestMethod.GET)
+	public String getPatientInfo(@PathVariable String name) {
+		return patientService.getPatientInfo(name);
+	}
 
 }
