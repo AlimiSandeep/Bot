@@ -24,9 +24,22 @@ public class DoctorDao {
 				.setParameter("specialization", specialization).executeUpdate();
 	}
 
+	@Transactional
+	public int deleteDoctor(String name) {
+
+		String query = "delete from doctor where doc_name=:name";
+		return entityManager.createNativeQuery(query).setParameter("name", name).executeUpdate();
+	}
+
 	public List<DoctorInfoDTO> getDoctors() {
 		String query = "select doc_name,specialization from doctor";
 		return (List<DoctorInfoDTO>) entityManager.createNativeQuery(query).getResultList();
+	}
+
+	public DoctorInfoDTO getDoctor(String name) {
+			return (DoctorInfoDTO) entityManager.createNamedQuery("DoctorInfoDTO").setParameter("name", name)
+					.getSingleResult();
+		
 	}
 
 	public List<String> getAvailableSlots(String date, String docName) {
@@ -42,18 +55,6 @@ public class DoctorDao {
 		BigInteger count = (BigInteger) entityManager.createNativeQuery(query).setParameter("name", name)
 				.getSingleResult();
 		return count.intValue();
-	}
-
-	@Transactional
-	public int deleteDoctor(String name) {
-
-		String query = "delete from doctor where doc_name=:name";
-		return entityManager.createNativeQuery(query).setParameter("name", name).executeUpdate();
-	}
-
-	public DoctorInfoDTO getDoctor(String name) {
-		return (DoctorInfoDTO) entityManager.createNamedQuery("DoctorInfoDTO").setParameter("name", name)
-				.getSingleResult();
 	}
 
 }

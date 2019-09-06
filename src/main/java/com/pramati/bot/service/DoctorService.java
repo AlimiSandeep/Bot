@@ -52,10 +52,16 @@ public class DoctorService {
 	}
 
 	public String getDoctor(String name) {
-		DoctorInfoDTO doctorDTO = dao.getDoctor(name);
-		if (doctorDTO == null)
-			return "No doctor exists with given name";
-		return doctorDTO.toString();
+		String output = null;
+		try {
+			DoctorInfoDTO doctorDTO = dao.getDoctor(name);
+			output = doctorDTO.toString();
+		} catch (Exception e) {
+			output = "No doctor exists with given name";
+		}
+
+		return output;
+
 	}
 
 }

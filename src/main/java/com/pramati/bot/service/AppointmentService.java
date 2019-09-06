@@ -52,10 +52,16 @@ public class AppointmentService {
 	}
 
 	public String getPatientAppointments(String name) {
-		List<AppointmentInfoDTO> list = dao.getPatientAppointments(name);
-		if (list.isEmpty())
-			return "No appointments exists for given name";
-		return list.toString();
+		String output = null;
+		try {
+			List<AppointmentInfoDTO> list = dao.getPatientAppointments(name);
+			output = list.toString();
+		} catch (Exception e) {
+			output = "No appointments exists for given name";
+		}
+
+		return output;
+
 	}
 
 	public String deleteAppointment(int appointmentId) {

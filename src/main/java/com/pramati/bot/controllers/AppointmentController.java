@@ -33,7 +33,7 @@ public class AppointmentController {
 		return appointmentService.getAppointment(appointmentId);
 	}
 
-	@RequestMapping(value = "/patient/", method = RequestMethod.GET)
+	@RequestMapping(value = "/appointment", method = RequestMethod.GET)
 	public String getPatientAppointments(@RequestParam String name) {
 		return appointmentService.getPatientAppointments(name);
 	}

@@ -23,6 +23,11 @@ public class DoctorController {
 		return docService.newDoctor(name, specialization);
 
 	}
+	@RequestMapping(value = "/doctor", method = RequestMethod.DELETE)
+	public String deleteDoctor(@RequestParam String name) {
+		return docService.deleteDoctor(name);
+
+	}
 
 	@RequestMapping(value = "/doctors", method = RequestMethod.GET)
 	public List<DoctorInfoDTO> getDoctors() {
@@ -40,9 +45,5 @@ public class DoctorController {
 
 	}
 
-	@RequestMapping(value = "/doctor", method = RequestMethod.DELETE)
-	public String deleteDoctor(@RequestParam String name) {
-		return docService.deleteDoctor(name);
-
-	}
+	
 }
