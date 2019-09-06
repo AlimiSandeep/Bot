@@ -18,9 +18,7 @@ public class AppointmentController {
 	@RequestMapping(value = "/appointment", method = RequestMethod.POST)
 	public String createAppointment(@RequestParam int docId, @RequestParam String slotTime,
 			@RequestParam String appointmentDate, @RequestParam int pId) {
-
-		return appointmentService.createAppointment(docId, slotTime, appointmentDate, pId);
-
+  		return appointmentService.createAppointment(docId, slotTime, appointmentDate, pId);
 	}
 
 	@RequestMapping(value = "/appointments", method = RequestMethod.GET)
@@ -34,6 +32,16 @@ public class AppointmentController {
 	}
 
 	@RequestMapping(value = "/appointment", method = RequestMethod.GET)
+	public String getPatientAppointments(@RequestParam String name) {
+		return appointmentService.getPatientAppointments(name);
+	}
+
+	@RequestMapping(value = "/appointments", method = RequestMethod.GET)
+	public String getAppointments(@RequestParam("date") String appointmentDate) {
+		return appointmentService.getAppointments(appointmentDate);
+	}
+
+	@RequestMapping(value = "/patient/", method = RequestMethod.GET)
 	public String getPatientAppointments(@RequestParam String name) {
 		return appointmentService.getPatientAppointments(name);
 	}

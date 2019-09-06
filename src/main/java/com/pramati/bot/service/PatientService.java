@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.pramati.bot.dao.PatientDao;
 import com.pramati.bot.dto.PatientInfoDTO;
+
 
 @Service
 public class PatientService {
@@ -14,7 +16,8 @@ public class PatientService {
 	@Autowired
 	private PatientDao dao;
 
-	public List<PatientInfoDTO> getPatients() {
+
+	public String getPatients() {
 		return dao.getPatients();
 	}
 
@@ -29,6 +32,21 @@ public class PatientService {
 		}
 		return output;
 	}
+
+	public String deletePatient(String name) {
+		int flag = dao.deletePatient(name);
+		if (flag == 1)
+			return "Succesfully deleted";
+		return "Deletion failed.....As no patient exists with the name provided";
+	}
+
+	public String getPatientInfo(String name) {
+		PatientInfoDTO patientDTO = dao.getPatientInfo(name);
+		if (patientDTO == null)
+			return "No patient exists with given name";
+		return patientDTO.toString();
+	}
+
 
 	public String deletePatient(String name) {
 		int flag = dao.deletePatient(name);

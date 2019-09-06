@@ -8,11 +8,15 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.pramati.bot.service.DoctorService;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pramati.bot.dto.AppointmentInfoDTO;
 import com.pramati.bot.service.PatientService;
 import com.pramati.bot.service.SlotService;
+
 
 @Repository
 public class AppointmentDao {
@@ -67,6 +71,21 @@ public class AppointmentDao {
 		}
 	}
 
+
+	public List<AppointmentInfoDTO> getAppointments(String appointmentDate) {
+		return entityManager.createNamedQuery("getAppointmentsByDate").setParameter("date", appointmentDate)
+				.getResultList();
+	}
+
+	public AppointmentInfoDTO getAppointment(int appointmentId) {
+		try {
+			return (AppointmentInfoDTO) entityManager.createNamedQuery("getAppointmentByID")
+					.setParameter("appointmentId", appointmentId).getSingleResult();
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
+
 	public List<AppointmentInfoDTO> getPatientAppointments(String name) {
 
 		int pid = patientService.getPatientId(name);
@@ -80,6 +99,7 @@ public class AppointmentDao {
 		BigInteger count = (BigInteger) entityManager.createNativeQuery(query)
 				.setParameter("appointmentDate", appointmentDate).getSingleResult();
 		return count.intValue();
+
 	}
 
 	@Transactional

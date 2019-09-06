@@ -2,6 +2,8 @@ package com.pramati.bot.controllers;
 
 import java.util.List;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,6 @@ public class DoctorController {
 	@RequestMapping(value = "/doctor", method = RequestMethod.PUT)
 	public String newDoctor(@RequestParam String name, @RequestParam String specialization) {
 		return docService.newDoctor(name, specialization);
-
 	}
 	@RequestMapping(value = "/doctor", method = RequestMethod.DELETE)
 	public String deleteDoctor(@RequestParam String name) {
@@ -30,9 +31,10 @@ public class DoctorController {
 	}
 
 	@RequestMapping(value = "/doctors", method = RequestMethod.GET)
-	public List<DoctorInfoDTO> getDoctors() {
+	public String getDoctors() {
 		return docService.getDoctors();
 	}
+
 
 	@RequestMapping(value = "/doctor/{name}", method = RequestMethod.GET)
 	public String getDoctor(@PathVariable String name) {
