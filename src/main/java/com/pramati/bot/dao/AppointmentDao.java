@@ -17,7 +17,6 @@ import com.pramati.bot.dto.AppointmentInfoDTO;
 import com.pramati.bot.service.PatientService;
 import com.pramati.bot.service.SlotService;
 
-
 @Repository
 public class AppointmentDao {
 
@@ -58,21 +57,6 @@ public class AppointmentDao {
 //	i.e Getting all appointments details(patient_name,appointment_date,doc_name,time_of_appointment) for a date
 	public List<AppointmentInfoDTO> getAppointments(String appointmentDate) {
 
-		return entityManager.createNamedQuery("getAppointmentsByDate").setParameter("date", appointmentDate)
-				.getResultList();
-	}
-
-	public AppointmentInfoDTO getAppointment(int appointmentId) {
-		try {
-			return (AppointmentInfoDTO) entityManager.createNamedQuery("getAppointmentByID")
-					.setParameter("appointmentId", appointmentId).getSingleResult();
-		} catch (Exception e) {
-			throw new RuntimeException();
-		}
-	}
-
-
-	public List<AppointmentInfoDTO> getAppointments(String appointmentDate) {
 		return entityManager.createNamedQuery("getAppointmentsByDate").setParameter("date", appointmentDate)
 				.getResultList();
 	}

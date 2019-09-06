@@ -20,17 +20,9 @@ public class PatientController {
 
 	@RequestMapping(value = "/patients", method = RequestMethod.GET)
 
-	public String getPatients() {
+	public List<PatientInfoDTO> getPatients() {
 		return patientService.getPatients();
 	}
-	
-	
-	
-	@RequestMapping(value = "/patients/{name}", method = RequestMethod.GET)
-	public String getPatientAppointments(@PathVariable String name) {
-		return patientService.getPatientAppointments(name);
-	}
-	
 
 	@RequestMapping(value = "/patient", method = RequestMethod.PUT)
 	public String newPatient(@RequestParam String name, @RequestParam int contact, @RequestParam String city) {
@@ -43,11 +35,6 @@ public class PatientController {
 
 		return patientService.deletePatient(name);
 
-	}
-
-	@RequestMapping(value = "/patient/{name}", method = RequestMethod.GET)
-	public String getPatientInfo(@PathVariable String name) {
-		return patientService.getPatientInfo(name);
 	}
 
 	@RequestMapping(value = "/patient/{name}", method = RequestMethod.GET)

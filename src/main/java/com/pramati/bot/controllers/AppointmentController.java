@@ -36,15 +36,6 @@ public class AppointmentController {
 		return appointmentService.getPatientAppointments(name);
 	}
 
-	@RequestMapping(value = "/appointments", method = RequestMethod.GET)
-	public String getAppointments(@RequestParam("date") String appointmentDate) {
-		return appointmentService.getAppointments(appointmentDate);
-	}
-
-	@RequestMapping(value = "/patient/", method = RequestMethod.GET)
-	public String getPatientAppointments(@RequestParam String name) {
-		return appointmentService.getPatientAppointments(name);
-	}
 
 	@RequestMapping(value = "/appointment", method = RequestMethod.DELETE)
 	public String deleteAppointment(@RequestParam("id") int appointmentId) {

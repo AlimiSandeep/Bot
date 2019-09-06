@@ -31,7 +31,7 @@ public class DoctorController {
 	}
 
 	@RequestMapping(value = "/doctors", method = RequestMethod.GET)
-	public String getDoctors() {
+	public List<DoctorInfoDTO> getDoctors() {
 		return docService.getDoctors();
 	}
 

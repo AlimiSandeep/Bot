@@ -17,7 +17,7 @@ public class PatientService {
 	private PatientDao dao;
 
 
-	public String getPatients() {
+	public List<PatientInfoDTO> getPatients() {
 		return dao.getPatients();
 	}
 
@@ -33,19 +33,6 @@ public class PatientService {
 		return output;
 	}
 
-	public String deletePatient(String name) {
-		int flag = dao.deletePatient(name);
-		if (flag == 1)
-			return "Succesfully deleted";
-		return "Deletion failed.....As no patient exists with the name provided";
-	}
-
-	public String getPatientInfo(String name) {
-		PatientInfoDTO patientDTO = dao.getPatientInfo(name);
-		if (patientDTO == null)
-			return "No patient exists with given name";
-		return patientDTO.toString();
-	}
 
 
 	public String deletePatient(String name) {
