@@ -40,7 +40,7 @@ public class PatientsDao {
 		SqlRowSet rowSet = jdbcTemplate.queryForRowSet(query, pid);
 		String res = "";
 		while (rowSet.next()) {
-//			System.out.println(rowSet.getString(1)+" "+rowSet.getString(2)+" "+rowSet.getString(3));
+
 			res += rowSet.getString(1) + " " + rowSet.getString(2) + " " + rowSet.getString(3) + " "
 					+ rowSet.getString(4) + "\n";
 		}
