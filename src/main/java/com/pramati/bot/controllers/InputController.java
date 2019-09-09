@@ -35,7 +35,7 @@ public class InputController {
 		if (flag)
 			return "Successfully created event";
 		else
-			return "Appointment already exists \nAvailaible slots are ::" + "\n" + availableSlots;
+			return "Appointment already exists \nAvailable slots are ::" + "\n" + availableSlots;
 	}
 
 }
