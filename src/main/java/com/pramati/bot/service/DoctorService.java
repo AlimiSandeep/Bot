@@ -5,11 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.pramati.bot.dao.DoctorDao;
 import com.pramati.bot.dto.DoctorInfoDTO;
-
-
 
 @Service
 public class DoctorService {
@@ -30,21 +27,9 @@ public class DoctorService {
 
 	}
 
-
 	public List<DoctorInfoDTO> getDoctors() {
 		return dao.getDoctors();
 	}
-
-
-	public String getAvailableSlots(String date, String docName) {
-		int count = checkDoctorExists(docName);
-		if (count == 0)
-			return "No doctor exists with given name";
-		return "AVailable slots are ::\n" + dao.getAvailableSlots(date, docName);
-
-	}
-
-
 
 	public int checkDoctorExists(String name) {
 		return dao.checkDoctorExists(name);
@@ -59,8 +44,6 @@ public class DoctorService {
 
 	}
 
-
-
 	public String getDoctor(String name) {
 		String output = null;
 		try {
@@ -72,6 +55,14 @@ public class DoctorService {
 
 		return output;
 
+	}
+
+	public int getDoctorId(String name) {
+		try {
+			return dao.getDoctorId(name);
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 }

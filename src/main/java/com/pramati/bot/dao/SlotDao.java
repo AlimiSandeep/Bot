@@ -15,19 +15,21 @@ public class SlotDao {
 	public int getSlotId(String slotTime) {
 		String slot_query = "select slot_id from slot where slot_time=:slot_time";
 
-		int slotId = (int) entityManager.createNativeQuery(slot_query).setParameter("slot_time", slotTime)
-				.getSingleResult();
-
-		return slotId;
+		return (int) entityManager.createNativeQuery(slot_query).setParameter("slot_time", slotTime).getSingleResult();
 
 	}
 
-	public List<String> getAvailableSlotsForPatient(String date, int pId) {
-		String query = "select distinct s.slot_time from slot s INNER JOIN appointment b on b.slot_id!=s.slot_id and s.slot_id not in"
-				+ "(select slot_id from appointment where appointment_date=:date and pid=:pId)";
-		return entityManager.createNativeQuery(query).setParameter("date", date).setParameter("pId", pId)
+	public List<String> getAvailableSlots(String date, String docName) {
+		String query = "select distinct s.slot_time from slot s INNER JOIN appointment b on b.slot_id!=s.slot_id and s.slot_id not in("
+				+ "select slot_id from appointment where appointment_date=:date and doc_id=(select doc_id from doctor where doc_name=:docName));";
+		return entityManager.createNativeQuery(query).setParameter("date", date).setParameter("docName", docName)
 				.getResultList();
 
 	}
 
+	public List<String> getSlots() {
+		String query = "select slot_time from slot";
+		return entityManager.createNativeQuery(query).getResultList();
+	}
 }
+//select distinct s.slot_time from slot s INNER JOIN appointment b on b.slot_id!=s.slot_id and s.slot_id not in(select slot_id from appointment where appointment_date='2019-10-01' and doc_id=(select doc_id from doctor where doc_name='SHIVANI'));

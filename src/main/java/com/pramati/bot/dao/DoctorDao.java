@@ -26,27 +26,22 @@ public class DoctorDao {
 
 	@Transactional
 	public int deleteDoctor(String name) {
-
 		String query = "delete from doctor where doc_name=:name";
 		return entityManager.createNativeQuery(query).setParameter("name", name).executeUpdate();
 	}
 
 	public List<DoctorInfoDTO> getDoctors() {
-		String query = "select doc_name,specialization from doctor";
-		return (List<DoctorInfoDTO>) entityManager.createNativeQuery(query).getResultList();
+//		String query = "select docName,specialization from Doctor";
+		return (List<DoctorInfoDTO>) entityManager.createNamedQuery("getDoctors").getResultList();
 	}
 
 	public DoctorInfoDTO getDoctor(String name) {
+		try {
 			return (DoctorInfoDTO) entityManager.createNamedQuery("DoctorInfoDTO").setParameter("name", name)
 					.getSingleResult();
-		
-	}
-
-	public List<String> getAvailableSlots(String date, String docName) {
-		String query = "select distinct s.slot_time from slot s INNER JOIN appointment b on b.slot_id!=s.slot_id and s.slot_id not in("
-				+ "select slot_id from appointment where appointment_date=:date and doc_id=(select doc_id from doctor where doc_name=:docName));";
-		return entityManager.createNativeQuery(query).setParameter("date", date).setParameter("docName", docName)
-				.getResultList();
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
 
 	}
 
@@ -55,6 +50,11 @@ public class DoctorDao {
 		BigInteger count = (BigInteger) entityManager.createNativeQuery(query).setParameter("name", name)
 				.getSingleResult();
 		return count.intValue();
+	}
+
+	public int getDoctorId(String name) {
+		String docId_query = "select doc_id from doctor where doc_name=:name";
+		return (int) entityManager.createNativeQuery(docId_query).setParameter("name", name).getSingleResult();
 	}
 
 }

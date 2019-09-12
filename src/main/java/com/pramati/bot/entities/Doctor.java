@@ -28,6 +28,21 @@ import com.pramati.bot.dto.DoctorInfoDTO;
 							}
 					)
 			)
+@NamedNativeQuery(
+		name = "getDoctors", 
+		query = "select doc_name,specialization from doctor", 
+		resultSetMapping = "DoctorInfoDTO"
+	)
+	@SqlResultSetMapping(
+			name = "doctors",
+			classes = @ConstructorResult(
+					targetClass = DoctorInfoDTO.class, 
+					columns = {
+							@ColumnResult(name = "doc_name"),
+							@ColumnResult(name = "specialization")
+							}
+					)
+			)
 @Entity
 @Table(name = "doctor")
 public class Doctor {

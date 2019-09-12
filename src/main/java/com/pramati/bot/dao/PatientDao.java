@@ -42,7 +42,7 @@ public class PatientDao {
 
 	public int getPatientId(String name) {
 		String pid_query = "select pId from Patient where name=:name";
-		int pid = (int) entityManager.createQuery(pid_query).setParameter("name", name).getSingleResult();
-		return pid;
+		return (int) entityManager.createQuery(pid_query).setParameter("name", name).getSingleResult();
+
 	}
 }

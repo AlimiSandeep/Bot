@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pramati.bot.dao.AppointmentDao;
 import com.pramati.bot.dto.AppointmentInfoDTO;
+import com.pramati.bot.dto.DoctorInfoDTO;
 
 @Service
 public class AppointmentService {
@@ -17,17 +18,43 @@ public class AppointmentService {
 	@Autowired
 	private SlotService slotService;
 
-	public String createAppointment(int docId, String slotTime, String appointmentDate, int pId) {
-		int updatedCount = dao.createAppointment(docId, slotTime, appointmentDate, pId);
-		if (updatedCount == 1)
+	@Autowired
+	private PatientService patientService;
+
+	@Autowired
+	private DoctorService doctorService;
+
+	public String createAppointment(String docName, String slotTime, String appointmentDate, String patientName) {
+
+		int docId = doctorService.getDoctorId(docName);
+		if (docId == 0) {
+			List<DoctorInfoDTO> listOfDcotors = doctorService.getDoctors();
+			return "No doctor exists with given name\nAvailable doctors are ::" + listOfDcotors.toString();
+		}
+
+		int slotId = slotService.getSlotId(slotTime);
+		if (slotId == 0)
+			return "Invalid slot time\nValid slots are ::" + slotService.getSlots();
+
+		int pId = patientService.getPatientId(patientName);
+		if (pId == 0)
+			return "No patient exists";
+
+		int flag1 = checkAppointmentExistsAtSameTime(slotId, appointmentDate, pId);
+		int flag2 = checkDoctorAvailableAtThatTime(docId, slotId, appointmentDate);
+		if (flag1 < 1 && flag2 < 1) {
+			dao.createAppointment(docId, slotId, appointmentDate, pId);
 			return "Appointment created successfully";
 
+		}
 		return "No slots are available at this time\nAvailable slots are on " + appointmentDate + " are ::\n"
-				+ slotService.getAvailableSlotsForPatient(appointmentDate, pId);
+				+ slotService.getAvailableSlots(appointmentDate, docName);
+
 	}
 
-
-
+	public int checkDoctorAvailableAtThatTime(int docId, int slotId, String appointmentDate) {
+		return dao.checkDoctorAvailableAtThatTime(docId, slotId, appointmentDate);
+	}
 
 	public String getAppointments(String appointmentDate) {
 		int count = checkAppointmentsExistsOnDate(appointmentDate);
@@ -40,6 +67,10 @@ public class AppointmentService {
 	private int checkAppointmentsExistsOnDate(String appointmentDate) {
 		return dao.checkAppointmentsExistsOnDate(appointmentDate);
 
+	}
+
+	public int checkAppointmentExistsAtSameTime(int slotId, String appointmentDate, int pId) {
+		return dao.checkAppointmentExistsAtSameTime(slotId, appointmentDate, pId);
 	}
 
 	public String getAppointment(int appointmentId) {
@@ -55,18 +86,15 @@ public class AppointmentService {
 	}
 
 	public String getPatientAppointments(String name) {
-		String output = null;
-		try {
-			List<AppointmentInfoDTO> list = dao.getPatientAppointments(name);
-			output = list.toString();
-		} catch (Exception e) {
-			output = "No appointments exists for given name";
-		}
+		int pid = patientService.getPatientId(name);
+		if (pid == 0)
+			return "No patient exists for given name";
 
-		return output;
+		List<AppointmentInfoDTO> list = dao.getPatientAppointments(pid);
+
+		return list.toString();
 
 	}
-
 
 	public String deleteAppointment(int appointmentId) {
 		int flag = dao.deleteAppointment(appointmentId);

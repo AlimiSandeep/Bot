@@ -50,7 +50,12 @@ public class PatientService {
 	}
 
 	public int getPatientId(String name) {
-		return dao.getPatientId(name);
+
+		try {
+			return dao.getPatientId(name);
+		} catch (Exception e) {
+			return 0;
+		}
 
 	}
 }
