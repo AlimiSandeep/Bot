@@ -6,3 +6,4 @@ mvnw
 **target/
 **/tokens/
 /.metadata/
+**/Servers/
