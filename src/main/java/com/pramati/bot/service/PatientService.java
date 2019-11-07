@@ -19,22 +19,20 @@ public class PatientService {
 	}
 
 	public String newPatient(String name, int contact, String city) {
-		String output = null;
-		try {
-			int updatedCount = dao.newPatient(name, contact, city);
-			if (updatedCount == 1)
-				output = "Succesfully inserted";
-		} catch (Exception e) {
-			output = "Patient already exists with given name...";
+
+		int count=checkPatientExists(name, contact, city);
+		if(count==0) {
+			dao.newPatient(name, contact, city);
+		return "Successfully inserted";
 		}
-		return output;
+		return "Patient already exists with given name...";
 	}
 
-	public String deletePatient(String name) {
-		int flag = dao.deletePatient(name);
+	public String deletePatient(int  pid) {
+		int flag = dao.deletePatient(pid);
 		if (flag == 1)
 			return "Succesfully deleted";
-		return "Deletion failed.....As no patient exists with the name provided";
+		return "Deletion failed.....As no patient exists with the given patientId provided";
 	}
 
 	public String getPatientInfo(String name) {
@@ -57,5 +55,9 @@ public class PatientService {
 			return 0;
 		}
 
+	}
+	
+	public int checkPatientExists(String name, int contact, String city) {
+		return dao.checkPatientExists(name, contact, city);
 	}
 }

@@ -90,6 +90,7 @@ public class EventInsertionService {
 		SimpleDateFormat df2 = new SimpleDateFormat("hh:mm aa");
 
 		List<Event> items = getEvents(new DateTime(df1.parse(startDate)));
+		System.out.println(items.size());
 
 		for (Event event : items) {
 			String date = event.getStart().getDateTime().toString();
@@ -97,7 +98,7 @@ public class EventInsertionService {
 				Date strDate = df1.parse(date);
 				date = df2.format(strDate);
 				availableSlots.add(date);
-//				System.out.println(date);
+				System.out.println(date);
 			}
 		}
 
@@ -106,7 +107,7 @@ public class EventInsertionService {
 
 	public List<Event> getEvents(DateTime date) throws IOException {
 
-		Events events = service.events().list("sandeep.alimi@imaginea.com").setMaxResults(10).setTimeMin(date)
+		Events events = service.events().list("sandeep.alimi@imaginea.com").setTimeMin(date)
 				.setOrderBy("startTime").setSingleEvents(true).execute();
 		List<Event> items = events.getItems();
 		return items;

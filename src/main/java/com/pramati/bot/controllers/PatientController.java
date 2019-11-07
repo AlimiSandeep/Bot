@@ -25,9 +25,9 @@ public class PatientController {
 	}
 
 	@RequestMapping(value = "/patient", method = RequestMethod.DELETE)
-	public String deletePatient(@RequestParam String name) {
+	public String deletePatient(@RequestParam int pid) {
 
-		return patientService.deletePatient(name);
+		return patientService.deletePatient(pid);
 
 	}
 

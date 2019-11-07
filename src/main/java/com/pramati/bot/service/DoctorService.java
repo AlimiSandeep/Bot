@@ -15,20 +15,23 @@ public class DoctorService {
 	private DoctorDao dao;
 
 	public String newDoctor(String name, String specialization) {
-		String output = null;
-		try {
-			int updatedCount = dao.newDoctor(name, specialization);
-			if (updatedCount == 1)
-				output = "Succesfully inserted";
-		} catch (Exception e) {
-			output = "Doctor already exist with given name....!!";
+		int count = checkDoctorExists(name, specialization);
+		if (count == 0) {
+			dao.newDoctor(name, specialization);
+			return "Succesfully inserted";
+
 		}
-		return output;
+		return "Doctor already exist with given name....!!";
 
 	}
 
 	public List<DoctorInfoDTO> getDoctors() {
 		return dao.getDoctors();
+	}
+
+	public int checkDoctorExists(String name, String specialization) {
+		return dao.checkDoctorExists(name, specialization);
+
 	}
 
 	public int checkDoctorExists(String name) {

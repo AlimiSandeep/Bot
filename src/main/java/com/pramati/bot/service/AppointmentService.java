@@ -38,17 +38,19 @@ public class AppointmentService {
 
 		int pId = patientService.getPatientId(patientName);
 		if (pId == 0)
-			return "No patient exists";
+			return "No patient exists with given name";
 
 		int flag1 = checkAppointmentExistsAtSameTime(slotId, appointmentDate, pId);
-		int flag2 = checkDoctorAvailableAtThatTime(docId, slotId, appointmentDate);
-		if (flag1 < 1 && flag2 < 1) {
-			dao.createAppointment(docId, slotId, appointmentDate, pId);
-			return "Appointment created successfully";
+		if (flag1 > 0)
+			return "You cannot make an appointment at this time\nAs you have made an appointment with doctor " + docName
+					+ " at " + slotTime;
 
-		}
-		return "No slots are available at this time\nAvailable slots are on " + appointmentDate + " are ::\n"
-				+ slotService.getAvailableSlots(appointmentDate, docName);
+		int flag2 = checkDoctorAvailableAtThatTime(docId, slotId, appointmentDate);
+		if (flag2 > 0)
+			return "No slots are available at this time\n" + slotService.getAvailableSlots(appointmentDate, docName);
+
+		dao.createAppointment(docId, slotId, appointmentDate, pId);
+		return "Appointment created successfully";
 
 	}
 

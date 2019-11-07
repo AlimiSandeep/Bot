@@ -45,16 +45,23 @@ public class DoctorDao {
 
 	}
 
-	public int checkDoctorExists(String name) {
-		String query = "select count(doc_id) from doctor where doc_name=:name";
+	public int checkDoctorExists(String name, String specialization) {
+		String query = "select count(doc_id) from doctor where doc_name=:name and specialization=:specialization";
 		BigInteger count = (BigInteger) entityManager.createNativeQuery(query).setParameter("name", name)
-				.getSingleResult();
+				.setParameter("specialization", specialization).getSingleResult();
 		return count.intValue();
 	}
 
 	public int getDoctorId(String name) {
 		String docId_query = "select doc_id from doctor where doc_name=:name";
 		return (int) entityManager.createNativeQuery(docId_query).setParameter("name", name).getSingleResult();
+	}
+
+	public int checkDoctorExists(String name) {
+		String query = "select count(doc_id) from doctor where doc_name=:name";
+		BigInteger count = (BigInteger) entityManager.createNativeQuery(query).setParameter("name", name)
+				.getSingleResult();
+		return count.intValue();
 	}
 
 }

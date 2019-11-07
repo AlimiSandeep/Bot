@@ -1,5 +1,6 @@
 package com.pramati.bot.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -30,9 +31,9 @@ public class PatientDao {
 	}
 
 	@Transactional
-	public int deletePatient(String name) {
-		String query = "delete from Patient where name=:name";
-		return entityManager.createQuery(query).setParameter("name", name).executeUpdate();
+	public int deletePatient(int pid) {
+		String query = "delete from Patient where pid=:pid";
+		return entityManager.createQuery(query).setParameter("pid", pid).executeUpdate();
 	}
 
 	public PatientInfoDTO getPatientInfo(String name) {
@@ -44,5 +45,12 @@ public class PatientDao {
 		String pid_query = "select pId from Patient where name=:name";
 		return (int) entityManager.createQuery(pid_query).setParameter("name", name).getSingleResult();
 
+	}
+
+	public int checkPatientExists(String name, int contact, String city) {
+		String query = "select count(pid) from patient where name=:name and contact=:contact and city=:city";
+		BigInteger count = (BigInteger) entityManager.createNativeQuery(query).setParameter("name", name)
+				.setParameter("contact", contact).setParameter("city", city).getSingleResult();
+		return count.intValue();
 	}
 }

@@ -64,11 +64,12 @@ import com.pramati.bot.dto.AppointmentInfoDTO;
 	        columns = {
 	            @ColumnResult(name = "name"),
 	            @ColumnResult(name = "doc_name"),
-	            @ColumnResult(name = "appointment_date"),
+	            @ColumnResult(name = "appointment_date",type=String.class),
 	            @ColumnResult(name = "slot_time")
 	        }
 	    )
 	)
+
 @Entity
 @Table(name = "appointment")
 public class Appointment {
