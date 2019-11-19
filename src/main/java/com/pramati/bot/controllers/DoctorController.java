@@ -34,6 +34,11 @@ public class DoctorController {
 		return docService.getDoctors();
 	}
 
+	@RequestMapping(value = "/doctors/{specialization}", method = RequestMethod.GET)
+	public String getDoctorsBySpecialization(@PathVariable String specialization) {
+		return docService.getDoctorsBySpecialization(specialization);
+	}
+
 	@RequestMapping(value = "/doctor/{name}", method = RequestMethod.GET)
 	public String getDoctor(@PathVariable String name) {
 		return docService.getDoctor(name);

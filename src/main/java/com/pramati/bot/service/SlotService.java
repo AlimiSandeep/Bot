@@ -33,7 +33,7 @@ public class SlotService {
 		int count = doctorService.checkDoctorExists(docName);
 		if (count == 0)
 			return "No doctor exists with given name";
-		return "AVailable slots are ::\n" + dao.getAvailableSlots(date, docName);
+		return "Available slots are ::\n" + dao.getAvailableSlots(date, docName);
 
 	}
 

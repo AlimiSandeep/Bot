@@ -1,6 +1,7 @@
 package com.pramati.bot.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,17 @@ public class DoctorService {
 
 	public List<DoctorInfoDTO> getDoctors() {
 		return dao.getDoctors();
+	}
+
+	public String getDoctorsBySpecialization(String specialization) {
+		List<DoctorInfoDTO> doctorsbySpecialization = dao.getDoctorsBySpecialization(specialization);
+
+		if (doctorsbySpecialization.isEmpty()) {
+			return "No doctor exists with given specialization";
+		}
+
+		return doctorsbySpecialization.stream().map(DoctorInfoDTO::toString).collect(Collectors.joining("\n"));
+
 	}
 
 	public int checkDoctorExists(String name, String specialization) {

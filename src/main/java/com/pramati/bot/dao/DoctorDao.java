@@ -31,8 +31,13 @@ public class DoctorDao {
 	}
 
 	public List<DoctorInfoDTO> getDoctors() {
-//		String query = "select docName,specialization from Doctor";
 		return (List<DoctorInfoDTO>) entityManager.createNamedQuery("getDoctors").getResultList();
+	}
+
+	public List<DoctorInfoDTO> getDoctorsBySpecialization(String specialization) {
+
+		return (List<DoctorInfoDTO>) entityManager.createNamedQuery("getDoctorsBySpecialization")
+				.setParameter("specialization", specialization).getResultList();
 	}
 
 	public DoctorInfoDTO getDoctor(String name) {
