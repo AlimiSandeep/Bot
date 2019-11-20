@@ -1,10 +1,15 @@
 package com.pramati.bot.service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.pramati.bot.util.DateAndTimeExtractor;
+import com.pramati.bot.util.IntentExtractor;
+import com.pramati.bot.util.NameAndTitleExtractor;
 
 @Service
 public class ClientService {
@@ -27,7 +32,7 @@ public class ClientService {
 	@Autowired
 	private SlotService slotService;
 
-	public String getResponse(String userQuery) {
+	public String getResponse(String userQuery) throws ParseException {
 
 		String intent = intentExtractor.getIntent(userQuery);
 
@@ -54,7 +59,7 @@ public class ClientService {
 		return docService.getDoctors().toString();
 	}
 
-	public String slotIntent(String userQuery) {
+	public String slotIntent(String userQuery) throws ParseException {
 		String date = dateAndTimeExtractor.getDate(userQuery);
 		String name = nameExtractor.getName(userQuery);
 		if (date.equalsIgnoreCase("Date not found")) {

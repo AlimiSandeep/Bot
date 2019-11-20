@@ -1,5 +1,7 @@
 package com.pramati.bot.controllers;
 
+import java.text.ParseException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,7 @@ public class AppointmentController {
 
 	@RequestMapping(value = "/appointment", method = RequestMethod.POST)
 	public String createAppointment(@RequestParam String docName, @RequestParam String slotTime,
-			@RequestParam String appointmentDate, @RequestParam String patientName) {
+			@RequestParam String appointmentDate, @RequestParam String patientName) throws ParseException {
 		return appointmentService.createAppointment(docName, slotTime, appointmentDate, patientName);
 	}
 	

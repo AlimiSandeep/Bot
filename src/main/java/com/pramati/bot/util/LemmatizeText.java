@@ -1,4 +1,4 @@
-package com.pramati.bot.service;
+package com.pramati.bot.util;
 
 import java.util.Properties;
 

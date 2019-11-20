@@ -1,5 +1,6 @@
 package com.pramati.bot.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -25,6 +26,13 @@ public class SlotDao {
 		return entityManager.createNativeQuery(query).setParameter("date", date).setParameter("docName", docName)
 				.getResultList();
 
+	}
+
+	public int checkSlotAvailability(String date, String docName) {
+		String query = "select count(slot_id) from appointment where appointment_date=:date and doc_id=(select doc_id from doctor where doc_name=:docName);";
+		BigInteger count = (BigInteger) entityManager.createNativeQuery(query).setParameter("date", date)
+				.setParameter("docName", docName).getSingleResult();
+		return count.intValue();
 	}
 
 	public List<String> getSlots() {

@@ -1,4 +1,4 @@
-package com.pramati.bot.service;
+package com.pramati.bot.util;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.*;
@@ -15,7 +15,6 @@ import java.text.ParseException;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class DateService {
@@ -50,6 +49,17 @@ public class DateService {
 		String date = df1.format(newDate);
 		return date + ".000+05:30";
 
+	}
+
+	public String addDays(String date) throws ParseException {
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = dateFormat.parse(date);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(d);
+		cal.add(Calendar.DATE, 1); // minus number would decrement the days
+		String addedDate = dateFormat.format(cal.getTime());
+		return addedDate;
 	}
 
 }

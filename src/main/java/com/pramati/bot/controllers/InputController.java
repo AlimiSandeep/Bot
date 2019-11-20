@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pramati.bot.service.DateService;
 import com.pramati.bot.service.EventInsertionService;
+import com.pramati.bot.util.DateService;
 
 @RestController
 public class InputController {

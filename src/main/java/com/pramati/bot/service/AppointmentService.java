@@ -1,5 +1,6 @@
 package com.pramati.bot.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class AppointmentService {
 	@Autowired
 	private DoctorService doctorService;
 
-	public String createAppointment(String docName, String slotTime, String appointmentDate, String patientName) {
+	public String createAppointment(String docName, String slotTime, String appointmentDate, String patientName)
+			throws ParseException {
 
 		int docId = doctorService.getDoctorId(docName);
 		if (docId == 0) {
