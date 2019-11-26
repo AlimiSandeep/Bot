@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.pramati.bot.service.SlotService;
 import com.pramati.bot.util.DateAndTimeExtractor;
+import com.pramati.bot.util.DateUtil;
 
 @Service
 public class ClientSlotService {
@@ -24,6 +25,9 @@ public class ClientSlotService {
 
 	@Autowired
 	private SlotService slotService;
+
+	@Autowired
+	private DateUtil dateService;
 
 	@Autowired
 	private ClientAppointmentService clientAppointmentService;
@@ -40,7 +44,20 @@ public class ClientSlotService {
 		}
 
 		String docName = clientAppointmentService.getDoctorDetails(userQuery);
-		System.out.println(slotService.getAvailableSlots(date, docName));
+		String newDate = null;
+
+		int count = slotService.checkSlotAvailability(date, docName);
+		if (count != 6)
+			System.out.println(slotService.getAvailableSlots(date, docName));
+		else {
+			do {
+				newDate = dateService.addDays(date);
+				count = slotService.checkSlotAvailability(newDate, docName);
+			} while (count == 6);
+			date = newDate;
+			System.out.println("No slots are available on :: " + date + "\nNext available slots are on:: " + newDate
+					+ "\n" + slotService.getAvailableSlots(newDate, docName));
+		}
 
 		System.out.println("Do you want to book appointment with the given details");
 		System.out.println("Doctor :" + docName);

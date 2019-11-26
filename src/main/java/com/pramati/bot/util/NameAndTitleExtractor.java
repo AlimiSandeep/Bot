@@ -2,7 +2,10 @@ package com.pramati.bot.util;
 
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -12,26 +15,8 @@ import edu.stanford.nlp.util.CoreMap;
 @Service
 public class NameAndTitleExtractor {
 
-	/*
-	 * public String getName(String text) { String intent = null; try {
-	 * 
-	 * text = text.trim().replace(" ", "%20"); URL url = new
-	 * URL("http://127.0.0.1:5000/getname/" + text); HttpURLConnection conn =
-	 * (HttpURLConnection) url.openConnection(); conn.setRequestMethod("GET");
-	 * 
-	 * conn.setRequestProperty("Accept", "application/json"); if
-	 * (conn.getResponseCode() != 200) { throw new
-	 * RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode()); }
-	 * InputStreamReader in = new InputStreamReader(conn.getInputStream());
-	 * BufferedReader br = new BufferedReader(in);
-	 * 
-	 * intent = br.readLine(); conn.disconnect();
-	 * 
-	 * } catch (Exception e) { System.out.println("Exception in NetClientGet:- " +
-	 * e); }
-	 * 
-	 * return intent; }
-	 */
+	@Autowired
+	private RestTemplate restTemplate;
 
 	private static StanfordCoreNLP pipeline;
 	static {
@@ -43,6 +28,20 @@ public class NameAndTitleExtractor {
 	}
 
 	public String getName(String text) {
+		String name = getNameUsingStanfordModels(text);
+		if (name.equalsIgnoreCase("Name not found"))
+			name = getNameUsingSpacyModels(text);
+
+		return name;
+	}
+
+	public String getNameUsingSpacyModels(String text) {
+		String url = "http://127.0.0.1:5000/getname/";
+		ResponseEntity<String> response = restTemplate.getForEntity(url + text, String.class);
+		return response.getBody();
+	}
+
+	public String getNameUsingStanfordModels(String text) {
 		Annotation document = new Annotation(text);
 		pipeline.annotate(document);
 
@@ -63,7 +62,7 @@ public class NameAndTitleExtractor {
 		for (CoreMap sentence : document.get(CoreAnnotations.SentencesAnnotation.class)) {
 			for (CoreMap entityMention : sentence.get(CoreAnnotations.MentionsAnnotation.class)) {
 				if (entityMention.get(CoreAnnotations.EntityTypeAnnotation.class).equals("TITLE")) {
-					if(entityMention.toString().equalsIgnoreCase("doctor"))
+					if (entityMention.toString().equalsIgnoreCase("doctor"))
 						continue;
 					return entityMention.toString();
 				}
@@ -72,15 +71,16 @@ public class NameAndTitleExtractor {
 
 		return "Title not found";
 	}
+
 	public static void main(String[] args) {
 		NameAndTitleExtractor nameExtractor = new NameAndTitleExtractor();
 		System.out.println(nameExtractor.getTitle("get details of doctor srinivas"));
-		System.out.println(nameExtractor.getName("get the available slots for sandeep"));
-//		System.out.println(nameExtractor.getName("vyshnavi"));
-//		System.out.println(nameExtractor.getName("vivek"));
-//		System.out.println(nameExtractor.getName("sachin"));
-//		System.out.println(nameExtractor.getName("sandeep"));
-		
+		System.out.println(nameExtractor.getName("when doctor sachin would be available"));
+		System.out.println(nameExtractor.getName("vyshnavi"));
+		System.out.println(nameExtractor.getName("vivek"));
+		System.out.println(nameExtractor.getName("display the info of doctor sachin"));
+		System.out.println(nameExtractor.getName("sandeep"));
+
 	}
 
 }

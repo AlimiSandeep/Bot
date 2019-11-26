@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.pramati.bot.service.AppointmentService;
 import com.pramati.bot.util.DateAndTimeExtractor;
+import com.pramati.bot.util.DateUtil;
 import com.pramati.bot.util.NameAndTitleExtractor;
 
 @Service
@@ -21,6 +22,9 @@ public class ClientAppointmentService {
 
 	@Autowired
 	private NameAndTitleExtractor nameAndTitleExtractor;
+
+	@Autowired
+	private DateUtil dateUtil;
 
 	@Autowired
 	private DateAndTimeExtractor dateAndTimeExtractor;
@@ -40,6 +44,16 @@ public class ClientAppointmentService {
 		if (date.equalsIgnoreCase("Date not found")) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			date = dateFormat.format(new Date());
+		} else {
+			boolean flag = dateUtil.dateComparer(date);
+			if (!flag) {
+				do {
+					System.out.println("Please provide valid date");
+					date = dateAndTimeExtractor.getDate(reader.readLine());
+
+					flag = dateUtil.dateComparer(date);
+				} while (!flag);
+			}
 		}
 
 		if (time.equalsIgnoreCase("Time not found")) {
@@ -47,8 +61,6 @@ public class ClientAppointmentService {
 				System.out.println("Please provide time for the appointment");
 				time = reader.readLine();
 				time = dateAndTimeExtractor.getTime(time);
-//				System.out.println(time);
-
 			} while (time.equalsIgnoreCase("Time not found"));
 		}
 

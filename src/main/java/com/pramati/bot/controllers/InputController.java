@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pramati.bot.service.EventInsertionService;
-import com.pramati.bot.util.DateService;
+import com.pramati.bot.util.DateUtil;
 
 @RestController
 public class InputController {
@@ -20,7 +20,7 @@ public class InputController {
 	private EventInsertionService eventService;
 
 	@Autowired
-	private DateService ds;
+	private DateUtil ds;
 
 	@RequestMapping(value = "/event-creation", method = RequestMethod.POST)
 	public String getDate(@RequestParam("userInput") String message) throws ParseException, IOException {

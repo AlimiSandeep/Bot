@@ -40,12 +40,6 @@ public class ClientInputService {
 		return input;
 	}
 
-	/**
-	 * Triggered when application starts
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
 	@EventListener(ApplicationReadyEvent.class)
 	public void onStart() throws IOException, ParseException {
 		reader = new BufferedReader(new InputStreamReader(System.in));

@@ -17,7 +17,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DateService {
+public class DateUtil {
 
 	public String getStartDate(String message) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
@@ -60,6 +60,14 @@ public class DateService {
 		cal.add(Calendar.DATE, 1); // minus number would decrement the days
 		String addedDate = dateFormat.format(cal.getTime());
 		return addedDate;
+	}
+
+	public boolean dateComparer(String date) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = dateFormat.parse(date);
+		Date todaysDate = dateFormat.parse(dateFormat.format(new Date()));
+		return (d.after(todaysDate) || d.equals(todaysDate));
+
 	}
 
 }

@@ -1,9 +1,12 @@
 package com.pramati.bot.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 
@@ -44,6 +47,7 @@ public class DateAndTimeExtractor {
 		Annotation annotation = new Annotation(text);
 		annotation.set(CoreAnnotations.DocDateAnnotation.class, referenceDate);
 		pipeline.annotate(annotation);
+//		System.out.println(annotation.get(CoreAnnotations.TextAnnotation.class));
 		List<CoreMap> timexAnnsAll = annotation.get(TimeAnnotations.TimexAnnotations.class);
 		for (CoreMap cm : timexAnnsAll) {
 			Temporal temporal = cm.get(TimeExpression.Annotation.class).getTemporal();
@@ -52,11 +56,28 @@ public class DateAndTimeExtractor {
 
 				return dateExpression.substring(0, dateExpression.indexOf('T'));
 
-			if (temporal.getTimexType().name().equalsIgnoreCase("DATE"))
+			if (temporal.getTimexType().name().equalsIgnoreCase("DATE")) {
+				Pattern p = Pattern.compile("W([0-4]?[0-9]{1}|5[0-3]{1})-WE$");
+				Matcher m = p.matcher(dateExpression);
+				if (m.find()) {
+					return getDateFromWeek(dateExpression);
+				}
 				return dateExpression;
+			}
+
 		}
 
 		return "Date not found";
+	}
+
+	public String getDateFromWeek(String str) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		int num = Integer.parseInt(str.substring(str.indexOf("W") + 1, str.indexOf("W") + 3));
+		cal.set(Calendar.WEEK_OF_YEAR, num);
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+		return formatter.format(cal.getTime());
+
 	}
 
 	public String getTime(String text) {
@@ -81,10 +102,11 @@ public class DateAndTimeExtractor {
 
 	public static void main(String[] args) {
 		DateAndTimeExtractor dateAndTimeextractor = new DateAndTimeExtractor();
-		System.out.println(dateAndTimeextractor.getDate("Book an appointment with doctor sachin on 25th nov"));
-		System.out.println(dateAndTimeextractor.getTime("Book an appointment with doctor sachin at 10am"));
-		System.out.println(dateAndTimeextractor.getDate("Book an appointment with doctor sachin on 25th nov at 10am"));
+		System.out.println(dateAndTimeextractor.getDate("when doctor sachn would be availe tomorrow"));
+		System.out.println(dateAndTimeextractor.getDate("when doctor sachn would be available on this weekend"));
+		System.out.println(dateAndTimeextractor.getDate("Book an appointment with doctor sachin  today"));
 		System.out.println(dateAndTimeextractor.getTime("Book an appointment with doctor sachin on 25th nov"));
+		System.out.println(dateAndTimeextractor.getDate("get me available slots of doctor sachin"));
 	}
 
 }
