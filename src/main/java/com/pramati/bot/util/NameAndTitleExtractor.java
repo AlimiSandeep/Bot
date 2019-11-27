@@ -28,9 +28,9 @@ public class NameAndTitleExtractor {
 	}
 
 	public String getName(String text) {
-		String name = getNameUsingStanfordModels(text);
+		String name = getNameUsingSpacyModels(text);
 		if (name.equalsIgnoreCase("Name not found"))
-			name = getNameUsingSpacyModels(text);
+			name = getNameUsingStanfordModels(text);
 
 		return name;
 	}

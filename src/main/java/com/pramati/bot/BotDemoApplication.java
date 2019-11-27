@@ -27,7 +27,7 @@ public class BotDemoApplication {
 	@EventListener(ApplicationReadyEvent.class)
 	public void flaskServerStartup() throws IOException {
 
-		ProcessBuilder pb = new ProcessBuilder("python3.6", "/home/sandeepa/My Data/source_code/restflask.py");
+		ProcessBuilder pb = new ProcessBuilder("python3.6", "restflask.py");
 		Process p = pb.start();
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		System.out.println(in.readLine());

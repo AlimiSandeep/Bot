@@ -35,7 +35,7 @@ public class ClientSlotService {
 	@Autowired
 	private DateAndTimeExtractor dateAndTimeExtractor;
 
-	public void slotIntent(String userQuery) throws IOException, ParseException {
+	public String slotIntent(String userQuery) throws IOException, ParseException {
 		String date = dateAndTimeExtractor.getDate(userQuery);
 
 		if (date.equalsIgnoreCase("Date not found")) {
@@ -44,6 +44,9 @@ public class ClientSlotService {
 		}
 
 		String docName = clientAppointmentService.getDoctorDetails(userQuery);
+		if (docName.equalsIgnoreCase("Sorry,I didn't get you"))
+			return docName;
+
 		String newDate = null;
 
 		int count = slotService.checkSlotAvailability(date, docName);
@@ -66,9 +69,10 @@ public class ClientSlotService {
 		String choice = reader.readLine();
 		if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
 			String inputs = date + " " + docName;
-			System.out.println(clientAppointmentService.appointmentIntent(inputs));
+			return clientAppointmentService.appointmentIntent(inputs);
 		}
-		return;
+		
+		return "Bot: Okay...";
 
 	}
 }

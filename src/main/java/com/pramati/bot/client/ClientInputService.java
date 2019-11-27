@@ -66,7 +66,7 @@ public class ClientInputService {
 				break;
 
 			case "slots":
-				clientSlotService.slotIntent(input);
+				System.out.println(clientSlotService.slotIntent(input));
 				break;
 
 			case "appointment":

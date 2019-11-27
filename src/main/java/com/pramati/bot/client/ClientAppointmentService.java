@@ -18,8 +18,6 @@ import com.pramati.bot.util.NameAndTitleExtractor;
 @Service
 public class ClientAppointmentService {
 
-	private static BufferedReader reader;
-
 	@Autowired
 	private NameAndTitleExtractor nameAndTitleExtractor;
 
@@ -32,12 +30,19 @@ public class ClientAppointmentService {
 	@Autowired
 	private AppointmentService appointmentService;
 
+	private static BufferedReader reader;
+
 	static {
 		reader = new BufferedReader(new InputStreamReader(System.in));
 	}
 
+	private int counter = 0;
+
 	public String appointmentIntent(String userQuery) throws IOException, ParseException {
 		String docName = getDoctorDetails(userQuery);
+		if (docName.equalsIgnoreCase("Sorry,I didn't get you"))
+			return docName;
+
 		String date = dateAndTimeExtractor.getDate(userQuery);
 		String time = dateAndTimeExtractor.getTime(userQuery);
 
@@ -47,21 +52,31 @@ public class ClientAppointmentService {
 		} else {
 			boolean flag = dateUtil.dateComparer(date);
 			if (!flag) {
+				counter = 0;
 				do {
 					System.out.println("Please provide valid date");
 					date = dateAndTimeExtractor.getDate(reader.readLine());
 
 					flag = dateUtil.dateComparer(date);
-				} while (!flag);
+					counter++;
+				} while (!flag && counter <= 2);
 			}
+			if (date.equalsIgnoreCase("Date not found"))
+				return "Sorry,I didn't get you";
 		}
 
 		if (time.equalsIgnoreCase("Time not found")) {
+
+			counter = 0;
 			do {
 				System.out.println("Please provide time for the appointment");
 				time = reader.readLine();
 				time = dateAndTimeExtractor.getTime(time);
-			} while (time.equalsIgnoreCase("Time not found"));
+				counter++;
+			} while (time.equalsIgnoreCase("Time not found") && counter <= 2);
+
+			if (time.equalsIgnoreCase("Time not found"))
+				return "Sorry,I didn't get you";
 		}
 
 		return appointmentService.createAppointment(docName, time, date, getPatientDetails());
@@ -69,14 +84,19 @@ public class ClientAppointmentService {
 
 	public String getDoctorDetails(String input) throws IOException {
 		String name = nameAndTitleExtractor.getName(input);
+		counter = 0;
 		if (name.equalsIgnoreCase("Name not found")) {
 			do {
 				System.out.println("Please provide name of the doctor");
 				name = reader.readLine();
 				name = nameAndTitleExtractor.getName(name);
+				counter++;
 
-			} while (name.equalsIgnoreCase("Name not found"));
+			} while (name.equalsIgnoreCase("Name not found") && counter <= 2);
+
 		}
+		if (name.equalsIgnoreCase("Name not found"))
+			return "Sorry,I didn't get you";
 
 		return name;
 
@@ -89,12 +109,16 @@ public class ClientAppointmentService {
 		patientName = nameAndTitleExtractor.getName(patientName);
 
 		if (patientName.equalsIgnoreCase("Name not found")) {
+			counter = 0;
 			do {
 				System.out.println("Please provide your name correctly");
 				patientName = reader.readLine();
 				patientName = nameAndTitleExtractor.getName(patientName);
+				counter++;
 
-			} while (patientName.equalsIgnoreCase("Name not found"));
+			} while (patientName.equalsIgnoreCase("Name not found") && counter <= 2);
+			if (patientName.equalsIgnoreCase("Name not found"))
+				return "Sorry,I didn't get you";
 		}
 
 		return patientName;
