@@ -81,4 +81,12 @@ public class AppointmentDao {
 		String query = "delete from appointment where appointment_id=:id";
 		return entityManager.createNativeQuery(query).setParameter("id", appointmentId).executeUpdate();
 	}
+
+	public int getAppointmentId(int docId, int slotId, String appointmentDate, int pId) {
+		String query = "select appointment_id from appointment where doc_id=:docId and slot_id=:slotId and appointment_date=:appointmentDate and pid=:pId";
+		int id = (int) entityManager.createNativeQuery(query).setParameter("docId", docId)
+				.setParameter("slotId", slotId).setParameter("appointmentDate", appointmentDate)
+				.setParameter("pId", pId).getSingleResult();
+		return id;
+	}
 }

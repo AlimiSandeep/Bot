@@ -15,22 +15,9 @@ import javax.persistence.Table;
 
 import com.pramati.bot.dto.PatientInfoDTO;
 
-@NamedNativeQuery(
-	    name = "PatientInfoDTO",
-	    query ="select name, contact, city from patient where name=:name",
-	    resultSetMapping = "PatientInfoDTO"
-	)
-	@SqlResultSetMapping(
-	    name = "PatientInfoDTO",
-	    classes = @ConstructorResult(
-	        targetClass = PatientInfoDTO.class,
-	        columns = {
-	            @ColumnResult(name = "name"),
-	            @ColumnResult(name = "contact"),
-	            @ColumnResult(name = "city")
-	        }
-	    )
-	)
+@NamedNativeQuery(name = "PatientInfoDTO", query = "select name, contact from patient where name=:name", resultSetMapping = "PatientInfoDTO")
+@SqlResultSetMapping(name = "PatientInfoDTO", classes = @ConstructorResult(targetClass = PatientInfoDTO.class, columns = {
+		@ColumnResult(name = "name"), @ColumnResult(name = "contact") }))
 @Entity
 @Table(name = "patient")
 public class Patient {
@@ -40,7 +27,6 @@ public class Patient {
 	private int pId;
 	private String name;
 	private int contact;
-	private String city;
 
 	@OneToMany
 	@JoinColumn(name = "appointments_pid_fk")
@@ -52,14 +38,6 @@ public class Patient {
 
 	public void setAppointment(List<Appointment> appointments) {
 		this.appointments = appointments;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
 	}
 
 	public int getPid() {

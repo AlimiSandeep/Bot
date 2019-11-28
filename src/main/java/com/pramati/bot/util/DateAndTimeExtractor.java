@@ -1,5 +1,6 @@
 package com.pramati.bot.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,7 +42,7 @@ public class DateAndTimeExtractor {
 	}
 
 	public String getDate(String text) {
-
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String dateExpression = null;
 
 		Annotation annotation = new Annotation(text);
@@ -62,7 +63,11 @@ public class DateAndTimeExtractor {
 				if (m.find()) {
 					return getDateFromWeek(dateExpression);
 				}
-				return dateExpression;
+				try {
+					return sdf.format(sdf.parse(dateExpression));
+				} catch (ParseException e) {
+					return "Date not found";
+				}
 			}
 
 		}
@@ -102,7 +107,7 @@ public class DateAndTimeExtractor {
 
 	public static void main(String[] args) {
 		DateAndTimeExtractor dateAndTimeextractor = new DateAndTimeExtractor();
-		System.out.println(dateAndTimeextractor.getDate("when doctor sachn would be availe tomorrow"));
+		System.out.println(dateAndTimeextractor.getDate("make an appointment next saturday"));
 		System.out.println(dateAndTimeextractor.getDate("when doctor sachn would be available on this weekend"));
 		System.out.println(dateAndTimeextractor.getDate("Book an appointment with doctor sachin  today"));
 		System.out.println(dateAndTimeextractor.getTime("Book an appointment with doctor sachin on 25th nov"));

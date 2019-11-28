@@ -18,17 +18,27 @@ public class PatientService {
 		return dao.getPatients();
 	}
 
-	public String newPatient(String name, int contact, String city) {
+//	public String newPatient(String name, int contact) {
+//
+//		int count = checkPatientExists(name, contact);
+//		if (count == 0) {
+//			dao.newPatient(name, contact);
+//			return "Successfully inserted";
+//		}
+//		return "Patient already exists with given name...";
+//	}
+//	
+	public boolean newPatient(String name, long contact) {
 
-		int count=checkPatientExists(name, contact, city);
-		if(count==0) {
-			dao.newPatient(name, contact, city);
-		return "Successfully inserted";
+		int count = checkPatientExists(name, contact);
+		if (count == 0) {
+			dao.newPatient(name, contact);
+			return true;
 		}
-		return "Patient already exists with given name...";
+		return false;
 	}
 
-	public String deletePatient(int  pid) {
+	public String deletePatient(int pid) {
 		int flag = dao.deletePatient(pid);
 		if (flag == 1)
 			return "Succesfully deleted";
@@ -56,8 +66,8 @@ public class PatientService {
 		}
 
 	}
-	
-	public int checkPatientExists(String name, int contact, String city) {
-		return dao.checkPatientExists(name, contact, city);
+
+	public int checkPatientExists(String name, long contact) {
+		return dao.checkPatientExists(name, contact);
 	}
 }

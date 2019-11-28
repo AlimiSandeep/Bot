@@ -52,7 +52,8 @@ public class AppointmentService {
 			return "No slots are available at this time\n" + slotService.getAvailableSlots(appointmentDate, docName);
 
 		dao.createAppointment(docId, slotId, appointmentDate, pId);
-		return "Appointment created successfully";
+		int appointmentId = getAppointmentId(docId, slotId, appointmentDate, pId);
+		return "Appointment created successfully with appointmentId " + appointmentId + "\n\tPlease note it for future refernece";
 
 	}
 
@@ -106,5 +107,10 @@ public class AppointmentService {
 			return "No Appointment exists with given ID";
 		return "Appointment deleted successfully";
 
+	}
+
+	public int getAppointmentId(int docId, int slotId, String appointmentDate, int pId) {
+		int appointmentId = dao.getAppointmentId(docId, slotId, appointmentDate, pId);
+		return appointmentId;
 	}
 }

@@ -70,4 +70,19 @@ public class DateUtil {
 
 	}
 
+	public boolean dateIsSunday(String date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date d;
+		try {
+			d = dateFormat.parse(date);
+		} catch (ParseException e) {
+			return false;
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(d);
+		if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+			return true;
+		return false;
+	}
+
 }

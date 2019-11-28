@@ -18,11 +18,11 @@ public class PatientController {
 	@Autowired
 	private PatientService patientService;
 
-	@RequestMapping(value = "/patient", method = RequestMethod.PUT)
-	public String newPatient(@RequestParam String name, @RequestParam int contact, @RequestParam String city) {
-
-		return patientService.newPatient(name, contact, city);
-	}
+//	@RequestMapping(value = "/patient", method = RequestMethod.PUT)
+//	public String newPatient(@RequestParam String name, @RequestParam int contact) {
+//
+//		return patientService.newPatient(name, contact);
+//	}
 
 	@RequestMapping(value = "/patient", method = RequestMethod.DELETE)
 	public String deletePatient(@RequestParam int pid) {

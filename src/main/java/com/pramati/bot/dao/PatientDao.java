@@ -18,15 +18,15 @@ public class PatientDao {
 	private EntityManager entityManager;
 
 	public List<PatientInfoDTO> getPatients() {
-		String query = "select name,contact,city from Patient";
+		String query = "select name,contact from Patient";
 		return (List<PatientInfoDTO>) entityManager.createQuery(query).getResultList();
 	}
 
 	@Transactional
-	public int newPatient(String name, int contact, String city) {
-		String query = "insert into patient(name,contact,city) values(:name,:contact,:city)";
+	public int newPatient(String name, long contact) {
+		String query = "insert into patient(name,contact) values(:name,:contact)";
 		return entityManager.createNativeQuery(query).setParameter("name", name).setParameter("contact", contact)
-				.setParameter("city", city).executeUpdate();
+				.executeUpdate();
 
 	}
 
@@ -47,10 +47,10 @@ public class PatientDao {
 
 	}
 
-	public int checkPatientExists(String name, int contact, String city) {
-		String query = "select count(pid) from patient where name=:name and contact=:contact and city=:city";
+	public int checkPatientExists(String name, long contact) {
+		String query = "select count(pid) from patient where name=:name and contact=:contact";
 		BigInteger count = (BigInteger) entityManager.createNativeQuery(query).setParameter("name", name)
-				.setParameter("contact", contact).setParameter("city", city).getSingleResult();
+				.setParameter("contact", contact).getSingleResult();
 		return count.intValue();
 	}
 }

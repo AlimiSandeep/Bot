@@ -28,8 +28,10 @@ public class SlotService {
 
 	public String getAvailableSlots(String date, String docName) throws ParseException {
 		int docCount = doctorService.checkDoctorExists(docName);
-		if (docCount == 0)
-			return "No doctor exists with given name";
+		if (docCount == 0) {
+//			return "No doctor exists with given name";
+			return null;
+		}
 
 		return dao.getAvailableSlots(date, docName).toString();
 
