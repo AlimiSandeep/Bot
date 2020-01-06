@@ -5,4 +5,5 @@ Tech stack used:
 Java,
 SpringBoot,
 JPA(EntityManager),
-Stanford CoreNLP.
+Stanford CoreNLP and Spacy NLP,
+Rasa NLU.
